@@ -1,7 +1,24 @@
 {
   "name": "thesis-spring-2023-real-estate-app-backend",
-  "packageManager": "yarn@3.4.1",
-  "dependencies": {
-    "express": "^4.18.2"
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://gitlab.com/codeengine-interns/thesis-spring-2023-real-estate-app/thesis-spring-2023-real-estate-app-backend.git",
+  "author": "Team intern Node JS",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint '**/*.js' --fix",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "eslint": "^8.34.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "^2.8.4",
+    "husky": "^8.0.0"
   }
 }
