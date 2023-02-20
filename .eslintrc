@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "es6": true
   },
   "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "plugins": ["prettier"],
@@ -19,8 +20,12 @@
     "class-methods-use-this": "off",
     "prefer-destructuring": ["error", { "object": true, "array": false }],
     "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val|err" }]
-  }
-   
+  },
+
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false
+  }    
 }
   
  

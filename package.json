@@ -10,6 +10,9 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/eslint-parser": "^7.19.1",
+    "babel-eslint": "^10.1.0",
     "eslint": "^8.34.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.6.0",
@@ -18,7 +21,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "prettier": "^2.8.4",
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "prettier": "^2.8.4"
   }
 }
