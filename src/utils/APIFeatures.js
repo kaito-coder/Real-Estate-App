@@ -49,4 +49,4 @@ const APIFeatures = class {
     return this;
   }
 };
-module.exports = APIFeatures;
+export default APIFeatures;
