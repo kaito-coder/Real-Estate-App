@@ -1,13 +1,15 @@
 import mongoose from 'mongoose';
 
-const estateStatusChema = new mongoose.Schema({
-  name: {
-    type: String,
-    enum: ['sold', 'available', 'dealing'],
-    default: 'available',
+const estateStatusChema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Status of esate must have name'],
+    },
   },
-  description: String,
-  //etc
-});
+  {
+    timestamps: true,
+  }
+);
 const EstateStatusModel = mongoose.model('EstateStatus', estateStatusChema);
 export default EstateStatusModel;

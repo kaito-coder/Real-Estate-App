@@ -1,13 +1,15 @@
 import mongoose from 'mongoose';
 
-const orderStatusChema = new mongoose.Schema({
-  name: {
-    type: String,
-    enum: ['pending', 'confirmed', 'done'],
-    default: 'pending',
+const orderStatusChema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Status of order must have a name'],
+    },
   },
-  description: String,
-  //etc
-});
+  {
+    timestamps: true,
+  }
+);
 const OrderStatusModel = mongoose.model('OrderStatus', orderStatusChema);
 export default OrderStatusModel;

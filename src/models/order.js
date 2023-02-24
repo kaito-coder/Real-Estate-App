@@ -7,20 +7,20 @@ const orderSchema = new mongoose.Schema(
     buyer: {
       type: Schema.Types.ObjectId,
       ref: 'UserModel',
-      required: [true, 'buyer is required'],
+      required: [true, 'Buyer is required'],
     },
     estate: {
       type: Schema.Types.ObjectId,
       ref: 'EstateModel',
-      required: [true, 'estate is required'],
+      required: [true, 'Estate is required'],
     },
     price_deal: {
       type: Number,
     },
     status: {
       type: Schema.Types.ObjectId,
+      required: [true, 'Status of order is required'],
       ref: 'OrderStatusModel',
-      required: [true, 'status is required'],
     },
   },
   {
