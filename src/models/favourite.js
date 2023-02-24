@@ -2,18 +2,23 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const favouriteSchema = new mongoose.Schema({
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'UserModel',
-    required: [true, 'Who like this estate?'],
+const favouriteSchema = new mongoose.Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'UserModel',
+      required: [true, 'Whisher is required'],
+    },
+    estate: {
+      type: Schema.Types.ObjectId,
+      ref: 'EstateModel',
+      required: [true, 'Estate liked is required'],
+    },
   },
-  estate: {
-    type: Schema.Types.ObjectId,
-    ref: 'EstateModel',
-    required: [true, 'This estate liked by who?'],
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const FavouriteEstateModel = mongoose.model(
   'FavouriteEstates',

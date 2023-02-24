@@ -1,13 +1,15 @@
 import mongoose from 'mongoose';
 
-const estateTypeSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    enum: ['house', 'apartment', 'building'],
-    default: 'house',
+const estateTypeSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Type of esate must have a name'],
+    },
   },
-  description: String,
-  // etc
-});
+  {
+    timestamps: true,
+  }
+);
 const EstateTypeModel = mongoose.model('EstateTypes', estateTypeSchema);
 export default EstateTypeModel;

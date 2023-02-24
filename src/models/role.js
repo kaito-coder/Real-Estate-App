@@ -4,8 +4,7 @@ const { Schema } = mongoose;
 const RoleSchema = new mongoose.Schema({
   name: {
     type: String,
-    enum: ['ADMIN', 'SALER & BUYER'],
-    default: 'SALER & BUYER',
+    required: [true, 'name of rule must be required'],
   },
   users: [
     {

@@ -30,12 +30,12 @@ const estateSchema = new mongoose.Schema(
     },
     type: {
       type: Schema.Types.ObjectId,
+      required: [true, 'This estate must have type of it'],
       ref: 'EstateTypeModel',
-      required: [true, 'Type of estate is required'],
     },
     currentStatus: {
       type: Schema.Types.ObjectId,
-      required: [true, 'Current status is required'],
+      required: [true, 'This esate must have status of it'],
       ref: 'EstateStatusModel',
     },
     coverImg: {
