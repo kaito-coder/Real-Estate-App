@@ -9,7 +9,9 @@
     "lint": "eslint '**/*.js' --fix",
     "start:dev": " NODE_ENV=development nodemon src/server.js",
     "start:prod": "NODE_ENV=production nodemon src/server.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "dev": "nodemon src/server.js",
+    "seeder": "nodemon src/seed/index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

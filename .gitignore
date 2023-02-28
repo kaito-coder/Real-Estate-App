@@ -4,4 +4,3 @@ test.js
 .husky
 .pnp.cjs
 .pnp.loader.mjs
-/src/testdata/
