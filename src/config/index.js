@@ -1,5 +1,5 @@
-import { MESSAGE_SUCCESS_GETALL_ROLE } from './role.HttpResponse.js';
-import { MESSAGE_SUCCESS_GETALL_ORDER_STATUS } from './orderStatus.HttpResponse.js';
+import { MESSAGE_SUCCESS_GETALL_ROLE } from './role.messageResponse.js';
+import { MESSAGE_SUCCESS_GETALL_ORDER_STATUS } from './orderStatus.messageResponse.js';
 
 const ROLE_RESPONSE_MESSAGE = {
   MESSAGE_SUCCESS_GETALL_ROLE,

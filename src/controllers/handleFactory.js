@@ -1,5 +1,5 @@
 import catchAsync from './../utils/catchAsync.js';
-import AppError from './../utils/appError.js';
+import AppError from './../utils/AppError.js';
 import APIFeatures from './../utils/APIFeatures.js';
 import status from 'http-status';
 
@@ -94,4 +94,6 @@ const getAll = (Model) =>
       },
     });
   });
-export { deleteOne, createOne, updateOne, getAll, getOne };
+
+const factory = { deleteOne, createOne, updateOne, getAll, getOne };
+export default factory;

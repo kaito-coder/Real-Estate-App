@@ -1,20 +1,26 @@
 import express from 'express';
-import {
-  signup,
-  login,
-  protect,
-  // restrictTo,
-  forgotPassword,
-  resetPassword,
-  updatePassword,
-} from '../controllers/authController.js';
-
+import userController from '../controllers/userController.js';
+import authController from '../controllers/authController.js';
+import upload from '../configs/cloudinary.config.js';
 const userRouter = express.Router();
 
-userRouter.post('/signup', signup);
-userRouter.post('/login', login);
-userRouter.post('/forgotPassword', forgotPassword);
-userRouter.patch('/updatePassword', protect, updatePassword);
-userRouter.post('/resetPassword/:token', resetPassword);
+userRouter.post('/signup', authController.signup);
+userRouter.post('/login', authController.login);
+userRouter.post('/forgotPassword', authController.forgotPassword);
+userRouter.post('/resetPassword/:token', authController.resetPassword);
+userRouter.use(authController.protect);
+userRouter.patch('/updateMyPassword', authController.updatePassword);
+userRouter.get('/profile', userController.getMe, userController.getUser);
+userRouter.patch(
+  '/profile',
+  upload.single('profileImage'),
+  userController.updateMe
+);
+
+userRouter.route('/').get(userController.getAllUsers);
+userRouter
+  .route('/:id')
+  .get(userController.getUser)
+  .delete(userController.deleteUser);
 
 export default userRouter;

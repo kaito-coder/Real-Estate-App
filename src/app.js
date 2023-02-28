@@ -7,16 +7,16 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
+import { NODE_ENV } from './configs/constants.js';
 import router from './routers/index.js';
 
 const app = express();
-
+console.log(NODE_ENV);
 // GLOBAL MILLDEWARE
 // Set security HTTP headers
 app.use(helmet());
 //Development looging
-console.log(process.env.NODE_ENV);
-if (process.env.NODE_ENV === 'development') {
+if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 //Limit request from the same API

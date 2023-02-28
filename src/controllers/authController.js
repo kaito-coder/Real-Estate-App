@@ -159,7 +159,9 @@ const resetPassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
-  await user.save();
+  await user.save({
+    validateBeforeSave: true,
+  });
   // 4) Log the user in, send JWT
   createSendToken(user, status.OK, res);
 });
@@ -184,7 +186,7 @@ const updatePassword = catchAsync(async (req, res, next) => {
   // 4) Log user in, send JWT
   createSendToken(user, status.OK, res);
 });
-export {
+const authController = {
   signup,
   login,
   protect,
@@ -193,3 +195,4 @@ export {
   resetPassword,
   updatePassword,
 };
+export default authController;
