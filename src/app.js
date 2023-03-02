@@ -7,7 +7,6 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
-import userRouter from './routers/userRoutes.js';
 import router from './routers/index.js';
 
 const app = express();
@@ -45,8 +44,8 @@ app.use((req, res, next) => {
   next();
 });
 // ROUTER HANDLERS
-app.use('/api/v1/users', userRouter);
 app.use('/api/v1', router);
+
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
