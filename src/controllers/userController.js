@@ -17,7 +17,6 @@ const getMe = (req, res, next) => {
 };
 
 const updateMe = catchAsync(async (req, res, next) => {
-  // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new AppError(messages.routeForUpdatePassword, status.BAD_REQUEST)

@@ -9,6 +9,8 @@ import xss from 'xss-clean';
 import hpp from 'hpp';
 import { NODE_ENV } from './configs/constants.js';
 import router from './routers/index.js';
+import swaggerUi from 'swagger-ui-express';
+import { swagger as swaggerFile } from './configs/swagger_output.js';
 
 const app = express();
 console.log(NODE_ENV);
@@ -43,8 +45,10 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
+
 // ROUTER HANDLERS
 app.use('/api/v1', router);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

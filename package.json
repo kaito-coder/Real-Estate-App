@@ -9,6 +9,7 @@
     "lint": "eslint '**/*.js' --fix",
     "start:dev": " NODE_ENV=development nodemon src/server.js",
     "start:prod": "NODE_ENV=production nodemon src/server.js",
+    "swagger-autogen": " node src/configs/swagger.js",
     "prepare": "husky install",
     "dev": "nodemon src/server.js",
     "seeder": "nodemon src/seed/index.js"
@@ -50,7 +51,10 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "husky": "^8.0.0",
-    "prettier": "^2.8.4"
+    "prettier": "^2.8.4",
+    "swagger-autogen": "^2.23.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.2"
   },
   "type": "module"
 }

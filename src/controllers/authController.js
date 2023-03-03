@@ -70,6 +70,15 @@ const login = catchAsync(async (req, res, next) => {
 });
 
 const protect = catchAsync(async (req, res, next) => {
+  /*  
+  #swagger.tags = ['Users];
+  #swagger.consumes = ['application/json'];
+  
+  #swagger.security = [{
+               "jwt": []
+        }] 
+  */
+
   let token;
   if (
     req.headers.authorization &&
