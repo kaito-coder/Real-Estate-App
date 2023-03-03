@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    minLengh: [8, 'password must be at least 8 characters long'],
+    minlength: [8, 'password must be at least 8 characters long'],
     required: [true, 'Password is required'],
     select: false,
   },
@@ -36,23 +36,6 @@ const userSchema = new mongoose.Schema({
       validator: function (el) {
         return el === this.password;
       },
-    },
-    password: {
-      type: String,
-      minLengh: 8,
-      required: [true, 'Password is required'],
-      select: false,
-    },
-    passwordConfirmation: {
-      type: String,
-      required: true,
-      validate: {
-        validator: function (el) {
-          return el === this.password;
-        },
-        message: 'Passwords are not the same',
-      },
-      select: false,
     },
     estates: [
       {
@@ -73,10 +56,6 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
       type: String,
       maxLength: 10,
-    },
-    profileImage: {
-      type: String,
-      required: true,
     },
   },
   createAt: {
