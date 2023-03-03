@@ -1,5 +1,6 @@
 import { getAllRoles } from './role.services.js';
 import { getAllOrderStatus } from './orderStatus.services.js';
+import { getAllEstateStatus } from './estateStatus.services.js';
 
 const roleService = {
   getAllRoles,
@@ -9,4 +10,8 @@ const orderStatusService = {
   getAllOrderStatus,
 };
 
-export { roleService, orderStatusService };
+const estateStatusService = {
+  getAllEstateStatus,
+};
+
+export { roleService, orderStatusService, estateStatusService };
