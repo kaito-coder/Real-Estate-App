@@ -1,0 +1,41 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:16
+    steps:
+      - checkout
+      - run: yarn install
+    deploy:
+      docker:
+        - image: circleci/node:16
+      environment:
+        RAILWAY_TOKEN: $RAILWAY_TOKEN
+      working_directory: ~/project
+      steps:
+        - run:
+            name: Install railway-cli
+            command: |
+              curl -fsSL https://railway.app/install.sh | sh
+              echo 'export PATH="$HOME/.railway/bin:$PATH"' >> $BASH_ENV
+              source $BASH_ENV
+        - run:
+            name: Deploy to Railway
+            command: |
+              railway login --token "$RAILWAY_TOKEN"
+              railway link
+              railway deploy
+  workflows:
+    version: 2
+    build-and-deploy:
+      jobs:
+        - build:
+            filters:
+              branches:
+                only: chore/F0Qa0zPb
+        - deploy:
+            requires:
+              - build
+            filters:
+              branches:
+                only: chore/F0Qa0zPb
