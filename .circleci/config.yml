@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:16
+    steps:
+      - checkout
+      - run: yarn install
+      - deploy:
+          name: Deploy to Railway
+          command: |
+            curl -sSL https://raw.githubusercontent.com/railwayapp/cli/main/install.sh | bash
+            railway install
+            railway variables:set MONGO_URI "mongodb+srv://kaitok57a01:dung682002@cluster0.iy6ejve.mongodb.net/?retryWrites=true&w=majority"
+            railway up
