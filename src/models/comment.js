@@ -17,10 +17,19 @@ const commentSchema = new mongoose.Schema(
     content: {
       type: String,
     },
+    isEdit: {
+      type: Boolean,
+    },
   },
   {
     timestamps: true,
   }
 );
+commentSchema.pre('^find', function (next) {
+  this.populate({
+    path: 'user',
+    select: 'lastName firstName profileImage',
+  });
+});
 const CommentModel = mongoose.model('Comments', commentSchema);
 export default CommentModel;

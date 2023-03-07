@@ -47,16 +47,6 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
     },
-    passwordChangedAt: {
-      type: Date,
-    },
-    address: {
-      type: String,
-    },
-    phoneNumber: {
-      type: String,
-      maxLength: 10,
-    },
   },
   createAt: {
     type: Date,
