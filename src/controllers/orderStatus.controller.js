@@ -1,5 +1,5 @@
 import { orderStatusService } from '../services/index.js';
-import { ORDER_STATUS_RESPONSE_MESSAGE } from '../config/index.js';
+import { ORDER_STATUS_RESPONSE_MESSAGE } from '../configs/index.js';
 import status from 'http-status';
 import { handleError } from '../utils/errHandler.js';
 
