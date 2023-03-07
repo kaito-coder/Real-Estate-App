@@ -1,5 +1,5 @@
 import { roleService } from '../services/index.js';
-import { ROLE_RESPONSE_MESSAGE } from '../config/index.js';
+import { ROLE_RESPONSE_MESSAGE } from '../configs/index.js';
 import status from 'http-status';
 import { handleError } from '../utils/errHandler.js';
 
