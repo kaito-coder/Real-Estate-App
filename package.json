@@ -12,7 +12,8 @@
     "swagger-autogen": " node src/configs/swagger.js",
     "prepare": "husky install",
     "dev": "nodemon src/server.js",
-    "seeder": "nodemon src/seed/index.js"
+    "seeder": "nodemon src/seed/index.js",
+    "start": "nodemon src/server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
