@@ -4,6 +4,7 @@ import orderStatusRouter from './orderStatus.router.js';
 import roleRouter from './role.router.js';
 import estateStatusRouter from './estateStatus.router.js';
 import estateTypeRouter from './estateType.router.js';
+import estateRouter from './estate.router.js';
 
 const router = express.Router();
 
@@ -14,4 +15,6 @@ router.use('/users', userRouter);
 
 router.use('/estate-status', estateStatusRouter);
 router.use('/estate-types', estateTypeRouter);
+router.use('/estates', estateRouter);
+
 export default router;

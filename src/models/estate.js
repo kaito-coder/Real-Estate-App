@@ -54,6 +54,12 @@ const estateSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Comments',
+      },
+    ],
   },
   {
     timestamps: true,
