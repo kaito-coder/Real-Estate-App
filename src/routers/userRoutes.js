@@ -1,7 +1,7 @@
 import express from 'express';
 import userController from '../controllers/userController.js';
 import authController from '../controllers/authController.js';
-import upload from '../configs/cloudinary.config.js';
+import { upload } from '../configs/cloudinary.config.js';
 const userRouter = express.Router();
 
 userRouter.post('/signup', authController.signup);
