@@ -11,8 +11,10 @@ import { NODE_ENV } from './configs/constants.js';
 import router from './routers/index.js';
 import swaggerUi from 'swagger-ui-express';
 import { swagger as swaggerFile } from './configs/swagger_output.js';
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 console.log(NODE_ENV);
 // GLOBAL MILLDEWARE
 // Set security HTTP headers
