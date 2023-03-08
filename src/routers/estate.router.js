@@ -5,6 +5,7 @@ import { uploader } from '../utils/multer.js';
 
 const estateRouter = express.Router();
 
+estateRouter.get('/', estateController.getAllEstate);
 estateRouter.use(authController.protect);
 estateRouter.post('/', uploader.multifile, estateController.createEstate);
 

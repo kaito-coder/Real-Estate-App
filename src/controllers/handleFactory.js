@@ -90,7 +90,7 @@ const getAll = (Model) =>
       message: message[200],
       data: {
         records: doc,
-        results: doc.length,
+        total: doc.length,
       },
     });
   });
