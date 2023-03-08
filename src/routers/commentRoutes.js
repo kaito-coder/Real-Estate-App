@@ -3,6 +3,7 @@ import commentController from '../controllers/commentController.js';
 import authController from '../controllers/authController.js';
 
 const commentRouter = express.Router({ mergeParams: true });
+
 commentRouter.use(authController.protect);
 
 commentRouter

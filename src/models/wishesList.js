@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const favouriteSchema = new mongoose.Schema(
+const wishesListSchema = new mongoose.Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -20,9 +20,6 @@ const favouriteSchema = new mongoose.Schema(
   }
 );
 
-const FavouriteEstateModel = mongoose.model(
-  'FavouriteEstates',
-  favouriteSchema
-);
+const wishesListModel = mongoose.model('wishesListEstates', wishesListSchema);
 
-export default FavouriteEstateModel;
+export default wishesListModel;
