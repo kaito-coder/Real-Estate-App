@@ -1,6 +1,8 @@
 import { estateService } from '../services/index.js';
 import { handleError } from '../utils/errHandler.js';
 import status from 'http-status';
+import factory from './handleFactory.js';
+import EstateModel from '../models/estate.js';
 
 const createEstate = async (req, res) => {
   try {
@@ -18,4 +20,6 @@ const createEstate = async (req, res) => {
   }
 };
 
-export { createEstate };
+const getAllEstate = factory.getAll(EstateModel);
+
+export { createEstate, getAllEstate };
