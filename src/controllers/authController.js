@@ -6,7 +6,8 @@ import AppError from '../utils/AppError.js';
 import { promisify } from 'util';
 import sendEmail from '../utils/sendEmail.js';
 import status from 'http-status';
-
+import lodash from 'lodash';
+import { fieldsToSignup } from '../configs/whiteListObject.js';
 const message = {
   statusSuccess: 'success',
   provideLogin: 'Please provide an email and password',
@@ -48,8 +49,10 @@ const createSendToken = (user, statusCode, res) => {
     },
   });
 };
+
 const signup = catchAsync(async (req, res, next) => {
-  const newUser = await UserModel.create(req.body);
+  const filteredBody = lodash.pick(req.body, fieldsToSignup);
+  const newUser = await UserModel.create(filteredBody);
   createSendToken(newUser, status.CREATED, res);
 });
 
