@@ -6,8 +6,8 @@ import status from 'http-status';
 import { message } from '../configs/commentMessageRes.js';
 
 const setEstateUserIds = catchAsync(async (req, res, next) => {
-  if (!req.body.estate) req.body.estate = req.params.id;
-  if (!req.body.user) req.user.id;
+  if (!req.body?.estate) req.body.estate = req.params.estateId;
+  if (!req.body?.user) req.body.author = req.user.id;
   next();
 });
 const checkIfUserIsOwner = catchAsync(async (req, res, next) => {
@@ -16,6 +16,18 @@ const checkIfUserIsOwner = catchAsync(async (req, res, next) => {
     return next(new AppError(message.errorUserNotOwner, status.UNAUTHORIZED));
   }
   next();
+});
+const getCommentByEstate = catchAsync(async (req, res, next) => {
+  if (!req.body?.estate) req.body.estate = req.params.estateId;
+  const comments = await CommentModel.find({ estate: req.body.estate });
+  if (!comments)
+    return next(new AppError(message.errorNoComments, status.NOT_FOUND));
+  res.status(status.OK).json({
+    message: message.success,
+    data: {
+      record: comments,
+    },
+  });
 });
 const getAllComments = factory.getAll(CommentModel);
 const getComment = factory.getOne(CommentModel);
@@ -31,5 +43,6 @@ const commentController = {
   updateComment,
   deleteComment,
   checkIfUserIsOwner,
+  getCommentByEstate,
 };
 export default commentController;

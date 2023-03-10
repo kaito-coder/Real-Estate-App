@@ -1,12 +1,12 @@
 import swaggerAutogen from 'swagger-autogen';
-import { NODE_ENV } from './constants';
+import { PORT } from './constants.js';
 const doc = {
   info: {
     title: 'API for Real Estate APP',
     version: '1.0.0',
     description: 'API for Real Estate APP',
   },
-  host: `localhost:${NODE_ENV.PORT}`,
+  host: `localhost:${PORT}`,
   basePath: '/api/v1',
   schemes: ['http', 'https'],
   consumes: ['application/json'],
@@ -25,6 +25,6 @@ const doc = {
     },
   },
 };
-const outputFile = './swagger_output.js';
+const outputFile = './swagger_output.json';
 const endpointsFiles = ['../routers/index.js'];
 swaggerAutogen(outputFile, endpointsFiles, doc);
