@@ -6,7 +6,8 @@ import { uploader } from '../utils/multer.js';
 import wishesListRouter from './wishesListRoutes.js';
 import commentController from '../controllers/commentController.js';
 import { estateMiddleware } from '../middlewares/index.js';
-
+import conversationController from '../controllers/conversationController.js';
+import { setEstateUserIds } from '../middlewares/userEstateMiddlewares.js';
 const estateRouter = express.Router();
 
 estateRouter.get('/', estateController.getAllEstate);
@@ -25,5 +26,11 @@ estateRouter.delete(
   estateMiddleware.checkExistanceEstate,
   estateMiddleware.checkIsOwner,
   estateController.deleteEstate
+);
+estateRouter.post(
+  '/:estateId/conversations',
+  authController.protect,
+  setEstateUserIds,
+  conversationController.createConversation
 );
 export default estateRouter;

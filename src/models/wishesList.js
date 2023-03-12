@@ -6,7 +6,7 @@ const wishesListSchema = new mongoose.Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'UserModel',
+      ref: 'Users',
       required: [true, 'Whisher is required'],
     },
     estate: {

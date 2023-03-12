@@ -48,7 +48,20 @@
     "/users/signup": {
       "post": {
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {}
       }
     },
@@ -280,19 +293,10 @@
       }
     },
     "/estates/": {
-      "post": {
-        "tags": [],
+      "get": {
         "description": "",
-        "consumes": [
-          "application/json"
-        ],
         "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "jwt": []
-          }
-        ]
+        "responses": {}
       }
     },
     "/comments/": {
@@ -326,7 +330,7 @@
                 "estate": {
                   "example": "any"
                 },
-                "user": {
+                "author": {
                   "example": "any"
                 }
               }
@@ -427,7 +431,23 @@
         "consumes": [
           "application/json"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "estate": {
+                  "example": "any"
+                },
+                "user": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {},
         "security": [
           {

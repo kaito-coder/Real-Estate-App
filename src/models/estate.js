@@ -6,7 +6,7 @@ const estateSchema = new mongoose.Schema(
   {
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'UserModel',
+      ref: 'Users',
       required: [true, 'Owner is required'],
     },
     name: {
