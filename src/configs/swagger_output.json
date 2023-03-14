@@ -520,6 +520,47 @@
           }
         ]
       }
+    },
+    "/conversations/{conversationId}/messages": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "conservation": {
+                  "example": "any"
+                },
+                "postByUser": {
+                  "example": "any"
+                },
+                "conversation": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
+      }
     }
   }
 }

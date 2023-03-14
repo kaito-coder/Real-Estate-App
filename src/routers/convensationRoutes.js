@@ -1,13 +1,20 @@
 import express from 'express';
 import conversationMessageController from '../controllers/conversationMessageController.js';
 import authController from '../controllers/authController.js';
-const conversationRouter = express.Router();
+import { checkUserIsInConversation } from '../middlewares/userModelMiddlewares.js';
 
+const conversationRouter = express.Router();
 conversationRouter.use(authController.protect);
 
 conversationRouter
   .route('/:conversationId/messages')
-  .post(conversationMessageController.createConversationMessage)
-  .get(conversationMessageController.getAllMessagesByConversation);
+  .get(
+    checkUserIsInConversation,
+    conversationMessageController.getAllMessagesByConversation
+  )
+  .post(
+    checkUserIsInConversation,
+    conversationMessageController.createConversationMessage
+  );
 
 export default conversationRouter;

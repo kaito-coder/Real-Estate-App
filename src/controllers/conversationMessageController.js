@@ -3,11 +3,14 @@ import status from 'http-status';
 import ConversationMessageModel from '../models/conversationMessage.js';
 import { conversationError } from '../configs/conversationMessage.js';
 import APIFeatures from '../utils/APIFeatures.js';
-
 const createConversationMessage = catchAsync(async (req, res, next) => {
+  const data = {
+    conversation: req.params.conversationId,
+    postedByUser: req.user.id,
+    ...req.body,
+  };
   const newMessage = await ConversationMessageModel.create(req.body);
-  const { conversation } = req.body;
-  global.io.to(conversation).emit('newMessage', { message: newMessage });
+  global.io.to(data.conversation).emit('newMessage', { message: newMessage });
   return res.status(status.CREATED).json({
     message: conversationError.success,
     data: newMessage,

@@ -4,4 +4,5 @@ export const conversationError = {
   availableConversation: 'Retrieve exist conversation',
   createSuccess: 'creating a new conversation',
   OK: 'Success',
+  notInConversation: 'user not in conversation',
 };
