@@ -3,4 +3,5 @@ export const conversationError = {
   success: 'Conversation created successfully',
   availableConversation: 'Retrieve exist conversation',
   createSuccess: 'creating a new conversation',
+  OK: 'Success',
 };

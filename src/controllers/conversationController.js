@@ -3,6 +3,7 @@ import status from 'http-status';
 import ConversationModel from '../models/conversation.js';
 import { conversationError } from '../configs/conversationMessage.js';
 import { findContactEstate } from '../services/estate.services.js';
+
 const createConversation = catchAsync(async (req, res, next) => {
   //setEstateUserIds();
   const { user, estate } = req.body;
@@ -21,6 +22,7 @@ const createConversation = catchAsync(async (req, res, next) => {
     },
   });
 });
+
 const conversationController = { createConversation };
 
 export default conversationController;
