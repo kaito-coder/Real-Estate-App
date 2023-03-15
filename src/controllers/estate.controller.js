@@ -22,4 +22,18 @@ const createEstate = async (req, res) => {
 
 const getAllEstate = factory.getAll(EstateModel);
 
-export { createEstate, getAllEstate };
+const getInfoEstate = async (req, res) => {
+  try {
+    const estateId = req.params.id;
+    const estate = await estateService.getInfoEstate(estateId);
+    return res.status(status.OK).json({
+      message: status[status.OK],
+      data: {
+        records: estate,
+      },
+    });
+  } catch (error) {
+    handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+  }
+};
+export { createEstate, getInfoEstate, getAllEstate };
