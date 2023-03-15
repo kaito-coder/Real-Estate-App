@@ -89,4 +89,19 @@ const getInfoEstate = async (id) => {
   }
 };
 
-export { createEstate, getInfoEstate };
+const deleteEstate = async (estateId) => {
+  try {
+    const deletedDocument = await EstateModel.findByIdAndDelete(estateId);
+    await Promise.all(
+      deletedDocument.thumbnail.map((publicID) => {
+        return cloudinary.uploader.destroy(publicID);
+      }),
+      cloudinary.uploader.destroy(deletedDocument.coverImg)
+    );
+    return deletedDocument;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export { createEstate, getInfoEstate, deleteEstate };

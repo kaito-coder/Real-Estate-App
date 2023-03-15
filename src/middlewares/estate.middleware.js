@@ -14,3 +14,17 @@ export const checkExistanceEstate = async (req, res, next) => {
   }
   next();
 };
+
+export const checkIsOwner = async (req, res, next) => {
+  try {
+    const estateId = req.params.id;
+    const salerId = req.user.id;
+    const estateFound = await EstateModel.findById(estateId);
+    if (salerId !== estateFound.owner.toString()) {
+      return next(handleError(status[status.FORBIDDEN], res, status.FORBIDDEN));
+    }
+  } catch (error) {
+    return next(handleError(error.message, res, status.INTERNAL_SERVER_ERROR));
+  }
+  next();
+};

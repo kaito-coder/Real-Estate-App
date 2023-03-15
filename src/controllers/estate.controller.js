@@ -36,4 +36,17 @@ const getInfoEstate = async (req, res) => {
     handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
   }
 };
-export { createEstate, getInfoEstate, getAllEstate };
+const deleteEstate = async (req, res) => {
+  try {
+    const estateId = req.params.id;
+    const estateDeleted = await estateService.deleteEstate(estateId);
+    return res.status(status.OK).json({
+      message: status[status.OK],
+      data: { records: estateDeleted },
+    });
+  } catch (error) {
+    handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+  }
+};
+
+export { createEstate, getInfoEstate, deleteEstate, getAllEstate };
