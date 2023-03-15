@@ -6,6 +6,7 @@ import {
   createEstate,
   getAllEstate,
   getInfoEstate,
+  deleteEstate,
 } from './estate.controller.js';
 
 const roleController = {
@@ -27,6 +28,7 @@ const estateController = {
   createEstate,
   getAllEstate,
   getInfoEstate,
+  deleteEstate,
 };
 
 export {

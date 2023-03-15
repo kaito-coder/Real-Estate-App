@@ -20,4 +20,10 @@ estateRouter.use(authController.protect);
 estateRouter.use('/:estateId/wishesLists', wishesListRouter);
 estateRouter.post('/', uploader.multifile, estateController.createEstate);
 estateRouter.use('/:estateId/comments', commentRouter);
+estateRouter.delete(
+  '/:id',
+  estateMiddleware.checkExistanceEstate,
+  estateMiddleware.checkIsOwner,
+  estateController.deleteEstate
+);
 export default estateRouter;
