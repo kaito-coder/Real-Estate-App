@@ -67,4 +67,26 @@ const createEstate = async ({ salerId, body, files }) => {
   }
 };
 
-export { createEstate };
+const getInfoEstate = async (id) => {
+  try {
+    const estateFound = await EstateModel.findById(id)
+      .populate({ path: 'currentStatus', select: 'name' })
+      .populate({ path: 'type', select: 'name' });
+    const urlThumnailPromise = estateFound.thumbnail.map((e) => {
+      return cloudinary.api.resource(e);
+    });
+    const urlThumnail = (await Promise.all(urlThumnailPromise)).map((e) => {
+      return e.secure_url;
+    });
+    return {
+      ...estateFound._doc,
+      currentStatus: estateFound.currentStatus.name,
+      type: estateFound.type.name,
+      thumbnail: urlThumnail,
+    };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export { createEstate, getInfoEstate };

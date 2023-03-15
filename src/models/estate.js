@@ -31,12 +31,12 @@ const estateSchema = new mongoose.Schema(
     type: {
       type: Schema.Types.ObjectId,
       required: [true, 'This estate must have type of it'],
-      ref: 'EstateTypeModel',
+      ref: 'EstateTypes',
     },
     currentStatus: {
       type: Schema.Types.ObjectId,
       required: [true, 'This esate must have status of it'],
-      ref: 'EstateStatusModel',
+      ref: 'EstateStatus',
     },
     coverImg: {
       type: String,
@@ -54,12 +54,6 @@ const estateSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    comments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Comments',
-      },
-    ],
   },
   {
     timestamps: true,
