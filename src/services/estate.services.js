@@ -4,65 +4,37 @@ import {
   getCoverImageResized,
   getThumbnailResize,
 } from '../utils/resizeImage.js';
-import { file64 } from '../utils/UriConverter.js';
 import { cloudinary } from '../configs/cloudinary.config.js';
 import AppError from '../utils/AppError.js';
 import status from 'http-status';
 import { conversationError } from '../configs/conversationMessage.js';
-
-const nestedFields = [
-  'name',
-  'address',
-  'area',
-  'neighborHood',
-  'type',
-  'currentStatus',
-  'price',
-  'bedRoom',
-  'bathRoom',
-  'description',
-];
+import {
+  uploadCoverImageEstate,
+  uploadThumbnailEstate,
+} from '../utils/uploadCloud.js';
+import mongoose from 'mongoose';
+import { DTO, UPLOAD_MESSAGE } from '../configs/index.js';
 
 const createEstate = async ({ salerId, body, files }) => {
   try {
-    const fields = pick(body, nestedFields);
-    const thumbnailPublicId = [];
-    let coverImagePublicId = null;
-    if (files) {
-      const folderName = `Estates/${fields.name}`;
-      const coverImage = files?.filter((e) => {
-        return e.fieldname === 'coverImg';
-      });
-      const isExistCoverImage = coverImage.length > 0;
-      if (isExistCoverImage) {
-        const coverImageResized = await getCoverImageResized(files);
-        coverImagePublicId = await cloudinary.uploader.upload(
-          file64(coverImageResized).content,
-          { folder: folderName }
-        );
-      }
-      const thumbnail = files?.filter((e) => {
-        return e.fieldname === 'thumbnail';
-      });
-      const isExistThumbnail = thumbnail.length > 0;
-      if (isExistThumbnail) {
-        const thumbnailResized = await getThumbnailResize(files);
-        const thumbnailPromises = thumbnailResized.map((e) => {
-          return cloudinary.uploader.upload(file64(e).content, {
-            folder: folderName,
-          });
-        });
-        const thumbnailResult = await Promise.all(thumbnailPromises);
-        thumbnailResult.forEach((e) => {
-          thumbnailPublicId.push(e.public_id);
-        });
-      }
-    }
+    const fields = pick(body, DTO.dtoEstate);
+    const estateId = mongoose.Types.ObjectId();
+    const folderName = `Estates/${estateId}`;
+    const [coverImage, thubnail] = await Promise.all([
+      getCoverImageResized(files),
+      getThumbnailResize(files),
+    ]);
+    if (!coverImage) throw new Error(UPLOAD_MESSAGE.VALIDATION_COVER_IMAGE);
+    const [coverImagePublicId, thumbnailPublicId] = await Promise.all([
+      uploadCoverImageEstate(coverImage, folderName),
+      uploadThumbnailEstate(thubnail, folderName),
+    ]);
     const estateAdded = await EstateModel.create({
+      _id: estateId,
       ...fields,
       owner: salerId,
-      thumbnail: thumbnailPublicId,
-      coverImg: coverImagePublicId.public_id,
+      coverImg: coverImagePublicId,
+      thumbnail: thumbnailPublicId || [],
     });
     return estateAdded;
   } catch (error) {
@@ -118,4 +90,68 @@ const findContactEstate = async (estateID) => {
   }
 };
 
-export { createEstate, getInfoEstate, deleteEstate, findContactEstate };
+const updateEstate = async ({ estateId, body, files }) => {
+  try {
+    const fields = pick(body, DTO.dtoEstate);
+    const folderName = `Estates/${estateId}`;
+    const estateFound = await EstateModel.findById(estateId);
+
+    const [coverImage, thumbnail] = await Promise.all([
+      getCoverImageResized(files),
+      getThumbnailResize(files),
+    ]);
+    let currentCoverImagePublicId = estateFound.coverImg;
+    if (coverImage) {
+      currentCoverImagePublicId = await uploadCoverImageEstate(
+        coverImage,
+        folderName,
+        async () => {
+          try {
+            await cloudinary.uploader.destroy(currentCoverImagePublicId);
+          } catch (error) {
+            throw new Error(error.message);
+          }
+        }
+      );
+    }
+
+    let currentThumbnailPublicId = estateFound.thumbnail;
+    if (thumbnail) {
+      currentThumbnailPublicId = await uploadThumbnailEstate(
+        thumbnail,
+        folderName,
+        async () => {
+          try {
+            await Promise.all(
+              estateFound.thumbnail.map((publicId) =>
+                cloudinary.uploader.destroy(publicId)
+              )
+            );
+          } catch (error) {
+            throw new Error(error.message);
+          }
+        }
+      );
+    }
+    const estateUpdated = await EstateModel.findByIdAndUpdate(
+      estateId,
+      {
+        ...fields,
+        coverImg: currentCoverImagePublicId,
+        thumbnail: currentThumbnailPublicId,
+      },
+      { new: true }
+    );
+    return estateUpdated;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export {
+  createEstate,
+  getInfoEstate,
+  deleteEstate,
+  updateEstate,
+  findContactEstate,
+};

@@ -5,6 +5,7 @@ import {
   createEstate,
   getInfoEstate,
   deleteEstate,
+  updateEstate,
 } from './estate.services.js';
 
 const roleService = {
@@ -23,6 +24,7 @@ const estateService = {
   createEstate,
   getInfoEstate,
   deleteEstate,
+  updateEstate,
 };
 
 export { roleService, orderStatusService, estateStatusService, estateService };
