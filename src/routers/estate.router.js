@@ -33,4 +33,12 @@ estateRouter.post(
   setEstateUserIds,
   conversationController.createConversation
 );
+estateRouter.patch(
+  '/:id',
+  estateMiddleware.checkExistanceEstate,
+  estateMiddleware.checkIsOwner,
+  uploader.multifile,
+  estateController.updateEstate
+);
+
 export default estateRouter;

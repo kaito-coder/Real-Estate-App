@@ -9,6 +9,7 @@ export const getCoverImageResized = async (files) => {
     const coverImage = files?.filter((e) => {
       return e.fieldname === 'coverImg';
     });
+    if (coverImage.length === 0) return;
     const coverImageWidth = 400;
     const coverImageHeigth = 400;
     const lastImage = coverImage.at(-1);
@@ -28,6 +29,7 @@ export const getThumbnailResize = async (files) => {
     let thumbnail = files?.filter((e) => {
       return e.fieldname === 'thumbnail';
     });
+    if (thumbnail.length === 0) return undefined;
     const coverImageWidth = 1600;
     const coverImageHeigth = 900;
     thumbnail = thumbnail.map(async (e) => {

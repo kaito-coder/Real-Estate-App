@@ -6,3 +6,16 @@ export const fieldsToSignup = [
   'passwordConfirm',
   'nationalId',
 ];
+
+export const dtoEstate = [
+  'name',
+  'address',
+  'area',
+  'neighborHood',
+  'type',
+  'currentStatus',
+  'price',
+  'bedRoom',
+  'bathRoom',
+  'description',
+];
