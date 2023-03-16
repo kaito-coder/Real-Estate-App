@@ -6,6 +6,9 @@ import {
 } from '../utils/resizeImage.js';
 import { file64 } from '../utils/UriConverter.js';
 import { cloudinary } from '../configs/cloudinary.config.js';
+import AppError from '../utils/AppError.js';
+import status from 'http-status';
+import { conversationError } from '../configs/conversationMessage.js';
 
 const nestedFields = [
   'name',
@@ -103,5 +106,16 @@ const deleteEstate = async (estateId) => {
     throw new Error(error.message);
   }
 };
+const findContactEstate = async (estateID) => {
+  try {
+    const contactEstate = await EstateModel.findById(estateID);
+    if (!contactEstate) {
+      return new AppError(conversationError.notFound, status.NOT_FOUND);
+    }
+    return contactEstate;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
-export { createEstate, getInfoEstate, deleteEstate };
+export { createEstate, getInfoEstate, deleteEstate, findContactEstate };
