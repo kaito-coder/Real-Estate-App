@@ -11,12 +11,12 @@ export const uploadCoverImageEstate = async (
       if (cb) {
         await cb();
       }
-      const coverImagePublicId = (
+      const coverImageUrl = (
         await cloudinary.uploader.upload(file64(coverImageResized).content, {
           folder: folderName,
         })
-      )?.public_id;
-      return coverImagePublicId;
+      )?.secure_url;
+      return coverImageUrl;
     }
   } catch (error) {
     throw new Error(error.message);
@@ -34,16 +34,20 @@ export const uploadThumbnailEstate = async (
         await cb();
       }
       const thumbnailPromises = thumbnailResized.map((image) => {
-        return cloudinary.uploader.upload(file64(image).content, {
+        return cloudinary.uploader.upload(file64(image)?.content, {
           folder: folderName,
         });
       });
-      const thumbnailPublicId = (await Promise.all(thumbnailPromises)).map(
-        (image) => image.public_id
+      const thumbnailPublicId = (await Promise.all(thumbnailPromises))?.map(
+        (image) => image.secure_url
       );
       return thumbnailPublicId;
     }
   } catch (error) {
     throw new Error(error.message);
   }
+};
+
+export const getPublicIdByUrl = (url) => {
+  return url.split('/')?.slice(-3)?.join('/')?.replace('.png', '');
 };

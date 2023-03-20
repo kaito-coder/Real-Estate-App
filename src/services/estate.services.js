@@ -9,6 +9,7 @@ import AppError from '../utils/AppError.js';
 import status from 'http-status';
 import { conversationError } from '../configs/conversationMessage.js';
 import {
+  getPublicIdByUrl,
   uploadCoverImageEstate,
   uploadThumbnailEstate,
 } from '../utils/uploadCloud.js';
@@ -25,7 +26,7 @@ const createEstate = async ({ salerId, body, files }) => {
       getThumbnailResize(files),
     ]);
     if (!coverImage) throw new Error(UPLOAD_MESSAGE.VALIDATION_COVER_IMAGE);
-    const [coverImagePublicId, thumbnailPublicId] = await Promise.all([
+    const [coverImageUrl, thumbnailUrl] = await Promise.all([
       uploadCoverImageEstate(coverImage, folderName),
       uploadThumbnailEstate(thubnail, folderName),
     ]);
@@ -33,12 +34,12 @@ const createEstate = async ({ salerId, body, files }) => {
       _id: estateId,
       ...fields,
       owner: salerId,
-      coverImg: coverImagePublicId,
-      thumbnail: thumbnailPublicId || [],
+      coverImg: coverImageUrl,
+      thumbnail: thumbnailUrl || [],
     });
     return estateAdded;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error);
   }
 };
 
@@ -47,37 +48,37 @@ const getInfoEstate = async (id) => {
     const estateFound = await EstateModel.findById(id)
       .populate({ path: 'currentStatus', select: 'name' })
       .populate({ path: 'type', select: 'name' });
-    const urlThumnailPromise = estateFound.thumbnail.map((e) => {
-      return cloudinary.api.resource(e);
-    });
-    const urlThumnail = (await Promise.all(urlThumnailPromise)).map((e) => {
-      return e.secure_url;
-    });
     return {
       ...estateFound._doc,
       currentStatus: estateFound.currentStatus.name,
       type: estateFound.type.name,
-      thumbnail: urlThumnail,
     };
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error);
   }
 };
 
 const deleteEstate = async (estateId) => {
   try {
     const deletedDocument = await EstateModel.findByIdAndDelete(estateId);
-    await Promise.all(
-      deletedDocument.thumbnail.map((publicID) => {
-        return cloudinary.uploader.destroy(publicID);
-      }),
-      cloudinary.uploader.destroy(deletedDocument.coverImg)
-    );
+    const coverImgPublicId = getPublicIdByUrl(deletedDocument?.coverImg);
+    const thumbnailPublicId = deletedDocument.thumbnail.map((url) => {
+      return getPublicIdByUrl(url);
+    });
+    await Promise.all([
+      cloudinary.uploader.destroy(coverImgPublicId),
+      Promise.all(
+        thumbnailPublicId.map((publicId) =>
+          cloudinary.uploader.destroy(publicId)
+        )
+      ),
+    ]);
     return deletedDocument;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error);
   }
 };
+
 const findContactEstate = async (estateID) => {
   try {
     const contactEstate = await EstateModel.findById(estateID);
@@ -86,7 +87,7 @@ const findContactEstate = async (estateID) => {
     }
     return contactEstate;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error);
   }
 };
 
@@ -100,7 +101,7 @@ const updateEstate = async ({ estateId, body, files }) => {
       getCoverImageResized(files),
       getThumbnailResize(files),
     ]);
-    let currentCoverImagePublicId = estateFound.coverImg;
+    let currentCoverImagePublicId = getPublicIdByUrl(estateFound.coverImg);
     if (coverImage) {
       currentCoverImagePublicId = await uploadCoverImageEstate(
         coverImage,
@@ -109,7 +110,7 @@ const updateEstate = async ({ estateId, body, files }) => {
           try {
             await cloudinary.uploader.destroy(currentCoverImagePublicId);
           } catch (error) {
-            throw new Error(error.message);
+            throw new Error(error);
           }
         }
       );
@@ -123,12 +124,13 @@ const updateEstate = async ({ estateId, body, files }) => {
         async () => {
           try {
             await Promise.all(
-              estateFound.thumbnail.map((publicId) =>
-                cloudinary.uploader.destroy(publicId)
-              )
+              estateFound.thumbnail.map((url) => {
+                const publicId = getPublicIdByUrl(url);
+                return cloudinary.uploader.destroy(publicId);
+              })
             );
           } catch (error) {
-            throw new Error(error.message);
+            throw new Error(error);
           }
         }
       );
@@ -144,7 +146,7 @@ const updateEstate = async ({ estateId, body, files }) => {
     );
     return estateUpdated;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error);
   }
 };
 
