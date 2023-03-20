@@ -2,6 +2,8 @@ import express from 'express';
 import userController from '../controllers/userController.js';
 import authController from '../controllers/authController.js';
 import { upload } from '../configs/cloudinary.config.js';
+import conversationController from '../controllers/conversationController.js';
+
 const userRouter = express.Router();
 
 userRouter.post('/signup', authController.signup);
@@ -16,11 +18,15 @@ userRouter.patch(
   upload.single('profileImage'),
   userController.updateMe
 );
-
 userRouter.route('/').get(userController.getAllUsers);
 userRouter
   .route('/:id')
   .get(userController.getUser)
   .delete(userController.deleteUser);
+
+// nested router for user
+userRouter
+  .route('/me/conversations')
+  .get(conversationController.getConversationByUserId);
 
 export default userRouter;

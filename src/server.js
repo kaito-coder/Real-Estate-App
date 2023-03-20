@@ -1,5 +1,5 @@
 import app from './app.js';
-import connectDataBase from './database/connectDB.js';
+import { connectDataBase } from './database/connectDB.js';
 import * as socketio from 'socket.io';
 import WebSockets from './utils/WebSockets.js';
 import http from 'http';
