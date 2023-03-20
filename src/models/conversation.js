@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { conversationError } from '../configs/conversationMessage';
+import { conversationError } from '../configs/conversationMessage.js';
 const { Schema } = mongoose;
 
 const conversationSchema = new Schema(

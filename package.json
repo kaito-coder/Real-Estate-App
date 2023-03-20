@@ -6,13 +6,14 @@
   "author": "Team intern Node JS",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint '**/*.js' --fix",
+    "lint": "eslint \"**/*.js\" --fix",
     "start:dev": " NODE_ENV=development nodemon src/server.js",
     "start:prod": "NODE_ENV=production nodemon src/server.js",
     "swagger-autogen": " node src/configs/swagger.js",
     "prepare": "husky install",
     "dev": "nodemon src/server.js",
-    "seeder": "nodemon src/seed/index.js"
+    "seed": "node src/seed/index.js",
+    "samples": "node src/samples/index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -45,6 +46,8 @@
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/eslint-parser": "^7.19.1",
+    "@babel/plugin-proposal-json-strings": "^7.18.6",
+    "@babel/plugin-syntax-import-assertions": "^7.20.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.34.0",
     "eslint-config-airbnb": "^19.0.4",
