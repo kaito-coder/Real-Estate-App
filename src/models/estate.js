@@ -18,14 +18,14 @@ const estateSchema = new mongoose.Schema(
       required: [true, 'Address is required'],
     },
     area: {
-      type: Number,
+      type: String,
       require: [true, 'Area is required'],
     },
     neighborHood: {
       type: String,
     },
     price: {
-      type: Number,
+      type: String,
       required: [true, 'Price is required'],
     },
     type: {

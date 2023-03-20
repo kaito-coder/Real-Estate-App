@@ -10,8 +10,16 @@ const connectDataBase = async () => {
     });
     console.log('Connected to DB');
   } catch (err) {
-    console.log('Failed to connect DB');
-    console.log(err);
+    throw new Error('Failed to connect DB');
   }
 };
-export default connectDataBase;
+
+const disConnectDataBase = async () => {
+  try {
+    return mongoose.disconnect();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export { connectDataBase, disConnectDataBase };
