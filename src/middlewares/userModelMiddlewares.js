@@ -8,6 +8,7 @@ export const setEstateUserIds = catchAsync(async (req, res, next) => {
   if (!req.body?.user) req.body.user = req.user.id;
   next();
 });
+
 export const checkIfUserIsOwner = (Model) =>
   catchAsync(async (req, res, next) => {
     const checkModel = await Model.findById(req.params.id);

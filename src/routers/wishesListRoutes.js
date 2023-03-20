@@ -5,7 +5,7 @@ import wishesListModel from '../models/wishesList.js';
 import {
   setEstateUserIds,
   checkIfUserIsOwner,
-} from '../middlewares/userEstateMiddlewares.js';
+} from '../middlewares/userModelMiddlewares.js';
 const wishesListRouter = express.Router({ mergeParams: true });
 wishesListRouter.use(authController.protect);
 

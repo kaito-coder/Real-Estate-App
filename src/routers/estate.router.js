@@ -7,7 +7,7 @@ import wishesListRouter from './wishesListRoutes.js';
 import commentController from '../controllers/commentController.js';
 import { estateMiddleware } from '../middlewares/index.js';
 import conversationController from '../controllers/conversationController.js';
-import { setEstateUserIds } from '../middlewares/userEstateMiddlewares.js';
+import { setEstateUserIds } from '../middlewares/userModelMiddlewares.js';
 const estateRouter = express.Router();
 
 estateRouter.get('/', estateController.getAllEstate);
@@ -17,6 +17,7 @@ estateRouter.get(
   estateMiddleware.checkExistanceEstate,
   estateController.getInfoEstate
 );
+estateRouter.get('/:estateId/comments', commentController.getCommentByEstate);
 estateRouter.use(authController.protect);
 estateRouter.use('/:estateId/wishesLists', wishesListRouter);
 estateRouter.post('/', uploader.multifile, estateController.createEstate);
@@ -29,7 +30,6 @@ estateRouter.delete(
 );
 estateRouter.post(
   '/:estateId/conversations',
-  authController.protect,
   setEstateUserIds,
   conversationController.createConversation
 );
