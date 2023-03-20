@@ -6,7 +6,7 @@
   "author": "Team intern Node JS",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint '**/*.js' --fix",
+    "lint": "eslint \"**/*.js\" --fix",
     "start:dev": " NODE_ENV=development nodemon src/server.js",
     "start:prod": "NODE_ENV=production nodemon src/server.js",
     "swagger-autogen": " node src/configs/swagger.js",

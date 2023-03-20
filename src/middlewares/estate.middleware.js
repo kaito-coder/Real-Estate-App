@@ -7,10 +7,10 @@ export const checkExistanceEstate = async (req, res, next) => {
     const estateId = req.params.id;
     const isExist = await EstateModel.findById(estateId);
     if (!isExist) {
-      return next(handleError(status[status.NOT_FOUND], res, status.NOT_FOUND));
+      handleError(status[status.NOT_FOUND], res, status.NOT_FOUND);
     }
   } catch (error) {
-    return next(handleError(error.message, res, status.INTERNAL_SERVER_ERROR));
+    handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
   }
   next();
 };
@@ -21,10 +21,10 @@ export const checkIsOwner = async (req, res, next) => {
     const salerId = req.user.id;
     const estateFound = await EstateModel.findById(estateId);
     if (salerId !== estateFound.owner.toString()) {
-      return next(handleError(status[status.FORBIDDEN], res, status.FORBIDDEN));
+      handleError(status[status.FORBIDDEN], res, status.FORBIDDEN);
     }
   } catch (error) {
-    return next(handleError(error.message, res, status.INTERNAL_SERVER_ERROR));
+    handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
   }
   next();
 };
