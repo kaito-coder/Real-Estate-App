@@ -278,6 +278,22 @@
         ]
       }
     },
+    "/users/me/conversations": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
+      }
+    },
     "/estate-status/": {
       "get": {
         "description": "",
@@ -522,6 +538,27 @@
       }
     },
     "/conversations/{conversationId}/messages": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
+      },
       "post": {
         "tags": [],
         "description": "",
@@ -534,24 +571,89 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
+          }
+        ],
+        "responses": {},
+        "security": [
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "conservation": {
-                  "example": "any"
-                },
-                "postByUser": {
-                  "example": "any"
-                },
-                "conversation": {
-                  "example": "any"
-                }
-              }
-            }
+            "jwt": []
+          }
+        ]
+      }
+    },
+    "/maps/provinces": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
+      }
+    },
+    "/maps/districts": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "provinceCode",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
+      }
+    },
+    "/maps/wards": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "districtCode",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
+      }
+    },
+    "/maps/corrdinates/{address}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {},
