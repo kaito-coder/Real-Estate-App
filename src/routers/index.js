@@ -8,6 +8,8 @@ import estateRouter from './estate.router.js';
 import commentRouter from './commentRoutes.js';
 import wishesListRouter from './wishesListRoutes.js';
 import conversationRouter from './convensationRoutes.js';
+import mapsRouter from './maps.router.js';
+
 const router = express.Router();
 
 router.use('/order-status', orderStatusRouter);
@@ -21,4 +23,5 @@ router.use('/estates', estateRouter);
 router.use('/comments', commentRouter);
 router.use('/wishesLists', wishesListRouter);
 router.use('/conversations', conversationRouter);
+router.use('/maps', mapsRouter);
 export default router;

@@ -30,12 +30,14 @@ const createEstate = async ({ salerId, body, files }) => {
       uploadCoverImageEstate(coverImage, folderName),
       uploadThumbnailEstate(thubnail, folderName),
     ]);
+    const { lat, lng } = JSON.parse(body.corrdinates);
     const estateAdded = await EstateModel.create({
       _id: estateId,
       ...fields,
       owner: salerId,
       coverImg: coverImageUrl,
       thumbnail: thumbnailUrl || [],
+      corrdinates: { lat: lat, lng: lng },
     });
     return estateAdded;
   } catch (error) {
@@ -50,8 +52,8 @@ const getInfoEstate = async (id) => {
       .populate({ path: 'type', select: 'name' });
     return {
       ...estateFound._doc,
-      currentStatus: estateFound.currentStatus.name,
-      type: estateFound.type.name,
+      currentStatus: estateFound.currentStatus?.name || null,
+      type: estateFound.type?.name || null,
     };
   } catch (error) {
     throw new Error(error);

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { MapPointer } from '../utils/mappointer.js';
 
 const { Schema } = mongoose;
 
@@ -15,7 +16,6 @@ const estateSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      required: [true, 'Address is required'],
     },
     area: {
       type: String,
@@ -54,11 +54,42 @@ const estateSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    corrdinates: {
+      type: {
+        lat: Number,
+        lng: Number,
+      },
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
-
+estateSchema.pre('save', async function (next) {
+  try {
+    const defaultCorrdinates = {
+      lat: 16.0720759,
+      lng: 107.9133182,
+    };
+    this.address = await MapPointer.getLocationByCoordinates({
+      lat:
+        this.corrdinates.lat &&
+        this.corrdinates.lat >= -90 &&
+        this.corrdinates.lat <= 90
+          ? this.corrdinates.lat
+          : defaultCorrdinates.lat,
+      lng:
+        this.corrdinates.lng &&
+        this.corrdinates.lng >= -180 &&
+        this.corrdinates.lng <= 180
+          ? this.corrdinates.lng
+          : defaultCorrdinates.lng,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+  next();
+});
 const EstateModel = mongoose.model('Estates', estateSchema);
 export default EstateModel;

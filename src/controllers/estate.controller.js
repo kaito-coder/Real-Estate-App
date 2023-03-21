@@ -16,7 +16,7 @@ const createEstate = async (req, res) => {
       data: { records: estateAdded },
     });
   } catch (error) {
-    handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+    handleError(error, res, status.INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -33,7 +33,7 @@ const getInfoEstate = async (req, res) => {
       },
     });
   } catch (error) {
-    handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+    handleError(error, res, status.INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -50,7 +50,7 @@ const updateEstate = async (req, res) => {
       data: { records: estateUpdated },
     });
   } catch (error) {
-    handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+    handleError(error, res, status.INTERNAL_SERVER_ERROR);
   }
 };
 
@@ -63,7 +63,7 @@ const deleteEstate = async (req, res) => {
       data: { records: estateDeleted },
     });
   } catch (error) {
-    handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+    handleError(error, res, status.INTERNAL_SERVER_ERROR);
   }
 };
 
