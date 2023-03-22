@@ -21,10 +21,6 @@ const conversationMessageSchema = new Schema(
       type: String,
       default: 'text',
     },
-    isEdited: {
-      type: Boolean,
-      default: false,
-    },
     isRecall: {
       type: Boolean,
       default: false,

@@ -651,6 +651,28 @@
         "parameters": [
           {
             "name": "address",
+          
+            "jwt": []
+          }
+        ]
+      }
+    },
+    "/conversations/{conversationId}/messages/{conversationMessageId}": {
+      "delete": {
+        "tags": [],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "conversationMessageId",
             "in": "path",
             "required": true,
             "type": "string"

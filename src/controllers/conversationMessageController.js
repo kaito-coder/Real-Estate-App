@@ -3,13 +3,15 @@ import status from 'http-status';
 import ConversationMessageModel from '../models/conversationMessage.js';
 import { conversationError } from '../configs/conversationMessage.js';
 import APIFeatures from '../utils/APIFeatures.js';
+import AppError from '../utils/AppError.js';
+
 const createConversationMessage = catchAsync(async (req, res, next) => {
   const data = {
     conversation: req.params.conversationId,
     postedByUser: req.user.id,
     ...req.body,
   };
-  const newMessage = await ConversationMessageModel.create(req.body);
+  const newMessage = await ConversationMessageModel.create(data);
   global.io.to(data.conversation).emit('newMessage', { message: newMessage });
   return res.status(status.CREATED).json({
     message: conversationError.success,
@@ -38,8 +40,30 @@ const getAllMessagesByConversation = catchAsync(async (req, res, next) => {
   });
 });
 
+const deleteConversationMessage = catchAsync(async (req, res, next) => {
+  const { conversationMessageId, conversationId } = req.params;
+  const conversationMessage = await ConversationMessageModel.findByIdAndUpdate(
+    conversationMessageId,
+    { isRecall: true },
+    { new: true }
+  );
+  global.io
+    .to(conversationId)
+    .emit('messageDeleted', { messageId: conversationMessage });
+
+  if (!conversationMessage) {
+    return next(new AppError(conversationError[404], status.NOT_FOUND));
+  }
+  return res.status(status.OK).json({
+    message: conversationError.reCall,
+    data: {
+      record: conversationMessage,
+    },
+  });
+});
 const conversationMessageController = {
   createConversationMessage,
   getAllMessagesByConversation,
+  deleteConversationMessage,
 };
 export default conversationMessageController;
