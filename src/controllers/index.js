@@ -8,6 +8,7 @@ import {
   getInfoEstate,
   deleteEstate,
   updateEstate,
+  getEstateByOwner,
 } from './estate.controller.js';
 
 const roleController = {
@@ -31,6 +32,7 @@ const estateController = {
   getInfoEstate,
   deleteEstate,
   updateEstate,
+  getEstateByOwner,
 };
 
 export {

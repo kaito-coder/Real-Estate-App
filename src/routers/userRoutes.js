@@ -3,7 +3,7 @@ import userController from '../controllers/userController.js';
 import authController from '../controllers/authController.js';
 import { upload } from '../configs/cloudinary.config.js';
 import conversationController from '../controllers/conversationController.js';
-
+import { estateController } from '../controllers/index.js';
 const userRouter = express.Router();
 
 userRouter.post('/signup', authController.signup);
@@ -28,5 +28,5 @@ userRouter
 userRouter
   .route('/me/conversations')
   .get(conversationController.getConversationByUserId);
-
+userRouter.route('/me/estates').get(estateController.getEstateByOwner);
 export default userRouter;
