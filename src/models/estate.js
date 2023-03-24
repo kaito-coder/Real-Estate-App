@@ -66,6 +66,17 @@ const estateSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+estateSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'type',
+    select: 'name -_id',
+  }).populate({
+    path: 'currentStatus',
+    select: 'name -_id',
+  });
+  next();
+});
+
 estateSchema.pre('save', async function (next) {
   try {
     const defaultCorrdinates = {
