@@ -47,9 +47,7 @@ const createEstate = async ({ salerId, body, files }) => {
 
 const getInfoEstate = async (id) => {
   try {
-    const estateFound = await EstateModel.findById(id)
-      .populate({ path: 'currentStatus', select: 'name' })
-      .populate({ path: 'type', select: 'name' });
+    const estateFound = await EstateModel.findById(id);
     return {
       ...estateFound._doc,
       currentStatus: estateFound.currentStatus?.name || null,
