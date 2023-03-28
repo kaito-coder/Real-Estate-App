@@ -15,7 +15,6 @@ import {
 } from '../utils/uploadCloud.js';
 import mongoose from 'mongoose';
 import { DTO, UPLOAD_MESSAGE } from '../configs/index.js';
-
 const createEstate = async ({ salerId, body, files }) => {
   try {
     const fields = pick(body, DTO.dtoEstate);
