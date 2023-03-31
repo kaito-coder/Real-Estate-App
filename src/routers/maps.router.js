@@ -13,7 +13,8 @@ mapsRouter.get(
 );
 mapsRouter.get('/wards', mapPointerController.getAllWardsByDistrictCode);
 mapsRouter.get(
-  '/corrdinates/:address',
+  '/coordinates/',
   mapPointerController.getRelativeCoordinatesByAdress
 );
+mapsRouter.get('/location', mapPointerController.getLocationByCoordinates);
 export default mapsRouter;

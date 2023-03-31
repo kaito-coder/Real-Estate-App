@@ -1,12 +1,12 @@
 import { estateService } from '../services/index.js';
-import { handleError } from '../utils/errHandler.js';
 import status from 'http-status';
 import factory from './handleFactory.js';
 import EstateModel from '../models/estate.js';
 import catchAsync from '../utils/catchAsync.js';
 import APIFeatures from '../utils/APIFeatures.js';
+import { ESTATE_MESSAGES } from '../configs/estates.config.js';
 
-const createEstate = async (req, res) => {
+const createEstate = async (req, res, next) => {
   try {
     const estateAdded = await estateService.createEstate({
       salerId: req.user.id,
@@ -18,13 +18,13 @@ const createEstate = async (req, res) => {
       data: { records: estateAdded },
     });
   } catch (error) {
-    handleError(error, res, status.INTERNAL_SERVER_ERROR);
+    return next(error);
   }
 };
 
 const getAllEstate = factory.getAll(EstateModel);
 
-const getInfoEstate = async (req, res) => {
+const getInfoEstate = async (req, res, next) => {
   try {
     const estateId = req.params.id;
     const estate = await estateService.getInfoEstate(estateId);
@@ -35,7 +35,7 @@ const getInfoEstate = async (req, res) => {
       },
     });
   } catch (error) {
-    handleError(error, res, status.INTERNAL_SERVER_ERROR);
+    return next(error);
   }
 };
 
@@ -59,7 +59,7 @@ const getEstateByOwner = catchAsync(async (req, res, next) => {
     },
   });
 });
-const updateEstate = async (req, res) => {
+const updateEstate = async (req, res, next) => {
   const estateId = req.params.id;
   try {
     const estateUpdated = await estateService.updateEstate({
@@ -68,24 +68,24 @@ const updateEstate = async (req, res) => {
       files: req.files,
     });
     return res.status(status.OK).json({
-      message: status[status.OK],
+      message: ESTATE_MESSAGES.UPDATED,
       data: { records: estateUpdated },
     });
   } catch (error) {
-    handleError(error, res, status.INTERNAL_SERVER_ERROR);
+    return next(error);
   }
 };
 
-const deleteEstate = async (req, res) => {
+const deleteEstate = async (req, res, next) => {
   try {
     const estateId = req.params.id;
     const estateDeleted = await estateService.deleteEstate(estateId);
     return res.status(status.OK).json({
-      message: status[status.OK],
+      message: ESTATE_MESSAGES.DELETED,
       data: { records: estateDeleted },
     });
   } catch (error) {
-    handleError(error, res, status.INTERNAL_SERVER_ERROR);
+    return next(error);
   }
 };
 

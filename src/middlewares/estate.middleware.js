@@ -1,16 +1,21 @@
 import { EstateModel } from '../models/index.js';
 import { handleError } from '../utils/errHandler.js';
 import status from 'http-status';
+import { ESTATE_MESSAGES } from '../configs/estates.config.js';
 
 export const checkExistanceEstate = async (req, res, next) => {
   try {
     const estateId = req.params.id;
     const isExist = await EstateModel.findById(estateId);
     if (!isExist) {
-      return handleError(status[status.NOT_FOUND], res, status.NOT_FOUND);
+      return handleError(
+        ESTATE_MESSAGES.NOTE_FOUND_WITH_ID,
+        res,
+        status.NOT_FOUND
+      );
     }
   } catch (error) {
-    handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+    return next(error);
   }
   next();
 };
@@ -24,7 +29,7 @@ export const checkIsOwner = async (req, res, next) => {
       return handleError(status[status.FORBIDDEN], res, status.FORBIDDEN);
     }
   } catch (error) {
-    handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+    return next(error);
   }
   next();
 };

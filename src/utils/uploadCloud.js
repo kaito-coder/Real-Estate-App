@@ -6,20 +6,16 @@ export const uploadCoverImageEstate = async (
   folderName,
   cb
 ) => {
-  try {
-    if (coverImageResized) {
-      if (cb) {
-        await cb();
-      }
-      const coverImageUrl = (
-        await cloudinary.uploader.upload(file64(coverImageResized).content, {
-          folder: folderName,
-        })
-      )?.secure_url;
-      return coverImageUrl;
+  if (coverImageResized) {
+    if (cb) {
+      await cb();
     }
-  } catch (error) {
-    throw new Error(error.message);
+    const coverImageUrl = (
+      await cloudinary.uploader.upload(file64(coverImageResized).content, {
+        folder: folderName,
+      })
+    )?.secure_url;
+    return coverImageUrl;
   }
 };
 
@@ -28,26 +24,26 @@ export const uploadThumbnailEstate = async (
   folderName,
   cb
 ) => {
-  try {
-    if (thumbnailResized) {
-      if (cb) {
-        await cb();
-      }
-      const thumbnailPromises = thumbnailResized.map((image) => {
-        return cloudinary.uploader.upload(file64(image)?.content, {
-          folder: folderName,
-        });
-      });
-      const thumbnailPublicId = (await Promise.all(thumbnailPromises))?.map(
-        (image) => image.secure_url
-      );
-      return thumbnailPublicId;
+  if (thumbnailResized) {
+    if (cb) {
+      await cb();
     }
-  } catch (error) {
-    throw new Error(error.message);
+    const thumbnailPromises = thumbnailResized.map((image) => {
+      return cloudinary.uploader.upload(file64(image)?.content, {
+        folder: folderName,
+      });
+    });
+    const thumbnailPublicId = (await Promise.all(thumbnailPromises))?.map(
+      (image) => image.secure_url
+    );
+    return thumbnailPublicId;
   }
 };
 
 export const getPublicIdByUrl = (url) => {
-  return url.split('/')?.slice(-3)?.join('/')?.replace('.png', '');
+  return url
+    .split('/')
+    ?.slice(-3)
+    ?.join('/')
+    ?.replace(/\.(jpg|JPG|jpeg|JPEG|png|PNG|WEBP|webp)$/, () => '');
 };
