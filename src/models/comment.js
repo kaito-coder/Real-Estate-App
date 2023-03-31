@@ -19,17 +19,19 @@ const commentSchema = new mongoose.Schema(
     },
     isEdit: {
       type: Boolean,
+      default: false,
     },
   },
   {
     timestamps: true,
   }
 );
-commentSchema.pre('^find', function (next) {
+commentSchema.pre(/^find/, function (next) {
   this.populate({
-    path: 'user',
+    path: 'author',
     select: 'lastName firstName profileImage',
   });
+  next();
 });
 const CommentModel = mongoose.model('Comments', commentSchema);
 export default CommentModel;
