@@ -1,9 +1,8 @@
 import { MapPointer } from '../utils/mappointer.js';
 import status from 'http-status';
-import { handleError } from '../utils/errHandler.js';
 
 export const mapPointerController = {
-  getAllProvinces: async (req, res) => {
+  getAllProvinces: async (req, res, next) => {
     try {
       const provinces = await MapPointer.getAllProvinces();
       return res.status(status.OK).json({
@@ -11,10 +10,10 @@ export const mapPointerController = {
         data: { total: provinces.length, records: provinces },
       });
     } catch (error) {
-      handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+      return next(error);
     }
   },
-  getAllDistrictsByProvinceCode: async (req, res) => {
+  getAllDistrictsByProvinceCode: async (req, res, next) => {
     try {
       const { provinceCode } = req.query;
       const districts = await MapPointer.getAllDistrictsByProvinceCode(
@@ -28,10 +27,10 @@ export const mapPointerController = {
         },
       });
     } catch (error) {
-      handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+      return next(error);
     }
   },
-  getAllWardsByDistrictCode: async (req, res) => {
+  getAllWardsByDistrictCode: async (req, res, next) => {
     try {
       const { districtCode } = req.query;
       const wards = await MapPointer.getAllWardsByDistrictCode(districtCode);
@@ -43,12 +42,12 @@ export const mapPointerController = {
         },
       });
     } catch (error) {
-      handleError(error.message, res, status.INTERNAL_SERVER_ERROR);
+      return next(error);
     }
   },
-  getRelativeCoordinatesByAdress: async (req, res) => {
+  getRelativeCoordinatesByAdress: async (req, res, next) => {
     try {
-      const { address } = req.params;
+      const { address } = req.query;
       const corrdinates = await MapPointer.getRelativeCoordinatesByAdress(
         address
       );
@@ -59,7 +58,21 @@ export const mapPointerController = {
         },
       });
     } catch (error) {
-      handleError(error, res, status.INTERNAL_SERVER_ERROR);
+      return next(error);
+    }
+  },
+  getLocationByCoordinates: async (req, res, next) => {
+    try {
+      const { lat, lng } = req.query;
+      const location = await MapPointer.getLocationByCoordinates({ lat, lng });
+      return res.status(status.OK).json({
+        message: status[status.OK],
+        records: {
+          data: location,
+        },
+      });
+    } catch (error) {
+      return next(error);
     }
   },
 };

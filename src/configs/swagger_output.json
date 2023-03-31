@@ -294,22 +294,6 @@
         ]
       }
     },
-    "/users/me/estates": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "jwt": []
-          }
-        ]
-      }
-    },
     "/estate-status/": {
       "get": {
         "description": "",
@@ -326,11 +310,217 @@
     },
     "/estates/": {
       "get": {
-        "description": "",
+        "description": "This route allow you to get all Estate",
         "parameters": [],
         "responses": {}
+      },
+      "post": {
+        "tags": [],
+        "description": "This route help you create new Estate",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "coverImg",
+            "in": "formData",
+            "type": "file"
+          },
+
+          {
+            "name": "thumbnail",
+            "in": "formData",
+            "type": "array",
+            "items": { "type": "file" }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "Da Nang House",
+                  "type": "string"
+                },
+                "address": {
+                  "example": "32 Nguyen Ba Hoc, Binh Thuan, Hai Chau, Da Nang",
+                  "type": "string"
+                },
+                "area": {
+                  "example": 300,
+                  "type": "Number"
+                },
+                "type": {
+                  "example": "ObjectId",
+                  "type": "ObjectId"
+                },
+                "currentStatus": {
+                  "example": "ObjectId",
+                  "type": "ObjectId"
+                },
+                "price": {
+                  "example": 300000000,
+                  "type": "Number"
+                },
+                "bedRoom": {
+                  "type": "Number",
+                  "example": 3
+                },
+                "bathRoom": {
+                  "type": "Number",
+                  "example": 4
+                },
+                "coordinates": {
+                  "type": "object",
+                  "properties": {
+                    "lat": {
+                      "type": "Number",
+                      "example": 16
+                    },
+                    "lng": {
+                      "type": "Number",
+                      "example": 108
+                    }
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Can von xa lo"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
       }
     },
+    "/estates/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "tags": [],
+        "description": "",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [],
+        "description": "This route help you modify already existance Estate",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "coverImg",
+            "in": "formData",
+            "type": "file"
+          },
+
+          {
+            "name": "thumbnail",
+            "in": "formData",
+            "type": "array",
+            "items": { "type": "file" }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "Da Nang House",
+                  "type": "string"
+                },
+                "address": {
+                  "example": "32 Nguyen Ba Hoc, Binh Thuan, Hai Chau, Da Nang",
+                  "type": "string"
+                },
+                "area": {
+                  "example": 300,
+                  "type": "Number"
+                },
+                "type": {
+                  "example": "ObjectId",
+                  "type": "ObjectId"
+                },
+                "currentStatus": {
+                  "example": "ObjectId",
+                  "type": "ObjectId"
+                },
+                "price": {
+                  "example": 300000000,
+                  "type": "Number"
+                },
+                "bedRoom": {
+                  "type": "Number",
+                  "example": 3
+                },
+                "bathRoom": {
+                  "type": "Number",
+                  "example": 4
+                },
+                "coordinates": {
+                  "type": "object",
+                  "properties": {
+                    "lat": {
+                      "type": "Number",
+                      "example": 16
+                    },
+                    "lng": {
+                      "type": "Number",
+                      "example": 108
+                    }
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Can von xa lo"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
+      }
+    },
+
     "/comments/": {
       "get": {
         "tags": [],
@@ -597,35 +787,6 @@
         ]
       }
     },
-    "/conversations/{conversationId}/messages/{conversationMessageId}": {
-      "delete": {
-        "tags": [],
-        "description": "",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "conversationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "conversationMessageId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {},
-        "security": [
-          {
-            "jwt": []
-          }
-        ]
-      }
-    },
     "/maps/provinces": {
       "get": {
         "tags": [],
@@ -696,6 +857,28 @@
         "parameters": [
           {
             "name": "address",
+          
+            "jwt": []
+          }
+        ]
+      }
+    },
+    "/conversations/{conversationId}/messages/{conversationMessageId}": {
+      "delete": {
+        "tags": [],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "conversationMessageId",
             "in": "path",
             "required": true,
             "type": "string"

@@ -54,12 +54,11 @@ const estateSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    corrdinates: {
+    coordinates: {
       type: {
         lat: Number,
         lng: Number,
       },
-      required: true,
     },
   },
   {
@@ -69,36 +68,33 @@ const estateSchema = new mongoose.Schema(
 estateSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'type',
-    select: 'name -_id',
+    select: 'name _id',
   }).populate({
     path: 'currentStatus',
-    select: 'name -_id',
+    select: 'name _id',
   });
   next();
 });
 
 estateSchema.pre('save', async function (next) {
   try {
-    const defaultCorrdinates = {
-      lat: 16.0720759,
-      lng: 107.9133182,
-    };
-    this.address = await MapPointer.getLocationByCoordinates({
-      lat:
-        this.corrdinates.lat &&
-        this.corrdinates.lat >= -90 &&
-        this.corrdinates.lat <= 90
-          ? this.corrdinates.lat
-          : defaultCorrdinates.lat,
-      lng:
-        this.corrdinates.lng &&
-        this.corrdinates.lng >= -180 &&
-        this.corrdinates.lng <= 180
-          ? this.corrdinates.lng
-          : defaultCorrdinates.lng,
-    });
+    if (!this.address) {
+      const defaultCoordinates = {
+        lat: 16.0720759,
+        lng: 107.9133182,
+      };
+      if (!this.coordinates.lat || !this.coordinates.lng) {
+        this.coordinates = defaultCoordinates;
+      }
+      const { street, district, city, county, countryName } =
+        await MapPointer.getLocationByCoordinates({
+          lat: this.coordinates.lat,
+          lng: this.coordinates.lng,
+        });
+      this.address = `${street}, ${district}, ${city}, ${county}, ${countryName}`;
+    }
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
   next();
 });
