@@ -11,7 +11,7 @@ const wishesListSchema = new mongoose.Schema(
     },
     estate: {
       type: Schema.Types.ObjectId,
-      ref: 'EstateModel',
+      ref: 'Estates',
       required: [true, 'Estate liked is required'],
     },
   },
@@ -19,6 +19,10 @@ const wishesListSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+wishesListSchema.pre(/^find/, function (next) {
+  this.populate('estate');
+  next();
+});
 
 const wishesListModel = mongoose.model('wishesListEstates', wishesListSchema);
 
