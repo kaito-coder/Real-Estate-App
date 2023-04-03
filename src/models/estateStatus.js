@@ -11,5 +11,5 @@ const estateStatusChema = new mongoose.Schema(
     timestamps: true,
   }
 );
-const EstateStatusModel = mongoose.model('EstateStatus', estateStatusChema);
+const EstateStatusModel = mongoose.model('EstateStatuses', estateStatusChema);
 export default EstateStatusModel;

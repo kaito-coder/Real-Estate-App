@@ -36,7 +36,7 @@ const estateSchema = new mongoose.Schema(
     currentStatus: {
       type: Schema.Types.ObjectId,
       required: [true, 'This esate must have status of it'],
-      ref: 'EstateStatus',
+      ref: 'EstateStatuses',
     },
     coverImg: {
       type: String,

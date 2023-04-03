@@ -8,6 +8,14 @@ const APIFeatures = class {
 
   filter() {
     const queryObj = { ...this.queryString };
+    // delete fields = null . Example : address = ''
+    const filterQueryObj = Object.keys(queryObj).reduce((accumulator, key) => {
+      if (queryObj[key] !== '') {
+        accumulator[key] = queryObj[key];
+      }
+      return accumulator;
+    }, {});
+
     const excludedFields = [
       'page',
       'sort',
@@ -23,10 +31,10 @@ const APIFeatures = class {
       'maxOfBathRoom',
       'minOfBathRoom',
     ];
-    excludedFields.forEach((el) => delete queryObj[el]);
+    excludedFields.forEach((el) => delete filterQueryObj[el]);
 
     // 1B) Advanced filtering
-    let queryStr = JSON.stringify(queryObj);
+    let queryStr = JSON.stringify(filterQueryObj);
     queryStr = queryStr.replace(
       /\b(gte|gt|lte|lt|in|regex)\b/g,
       (match) => `$${match}`
