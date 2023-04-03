@@ -79,6 +79,8 @@ const getAll = (Model) =>
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
+      .searchAllEstatesInSection()
+      .searchInRangePriceAndAreaAndBathRoomAndBedRoom()
       .sort()
       .limitFields()
       .paginate();
