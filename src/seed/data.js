@@ -3,47 +3,47 @@ import mongoose from 'mongoose';
 export const estateStatus = [
   {
     id: mongoose.Types.ObjectId(),
-    name: 'available',
+    name: 'Available',
   },
   {
     id: mongoose.Types.ObjectId(),
-    name: 'sold',
+    name: 'Sold',
   },
   {
     id: mongoose.Types.ObjectId(),
-    name: 'dealing',
+    name: 'Dealing',
   },
 ];
 
 export const estateTypes = [
   {
     id: mongoose.Types.ObjectId(),
-    name: 'house',
+    name: 'House',
   },
   {
     id: mongoose.Types.ObjectId(),
-    name: 'apartment',
+    name: 'Apartment',
   },
   {
     id: mongoose.Types.ObjectId(),
-    name: 'building',
+    name: 'Building',
   },
 ];
 
 export const orderStatus = [
   {
     id: mongoose.Types.ObjectId(),
-    name: 'pending',
+    name: 'Pending',
     estates: [],
   },
   {
     id: mongoose.Types.ObjectId(),
-    name: 'confirmed',
+    name: 'Confirmed',
     estates: [],
   },
   {
     id: mongoose.Types.ObjectId(),
-    name: 'done',
+    name: 'Done',
     estates: [],
   },
 ];

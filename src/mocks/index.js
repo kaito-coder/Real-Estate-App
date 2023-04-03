@@ -10,9 +10,9 @@ dotenv.config();
 await connectDataBase();
 await createSampleUsers(users);
 const availableStatusEstate = await EstateStatusModel.findOne({
-  name: 'available',
+  name: 'Available',
 });
-const houseTypeEstate = await EstateTypeModel.findOne({ name: 'house' });
+const houseTypeEstate = await EstateTypeModel.findOne({ name: 'House' });
 await createSampleEstates(
   estates_v2(availableStatusEstate.id, houseTypeEstate.id)
 );
