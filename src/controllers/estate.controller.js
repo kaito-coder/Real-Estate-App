@@ -89,6 +89,17 @@ const deleteEstate = async (req, res, next) => {
   }
 };
 
+const findNearEstate = catchAsync(async (req, res, next) => {
+  const { longitude, latitude, radius } = req.body;
+  const coordinates = [longitude, latitude]; // San Francisco longitude and latitude
+  const estatesNearest = await EstateModel.findNearest(coordinates, radius);
+  return res.status(status.OK).json({
+    message: status[status.OK],
+    data: {
+      records: estatesNearest,
+    },
+  });
+});
 export {
   createEstate,
   getInfoEstate,
@@ -96,4 +107,5 @@ export {
   getAllEstate,
   updateEstate,
   getEstateByOwner,
+  findNearEstate,
 };

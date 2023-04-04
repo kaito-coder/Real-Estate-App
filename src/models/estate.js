@@ -54,10 +54,16 @@ const estateSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    coordinates: {
+    location: {
       type: {
-        lat: Number,
-        lng: Number,
+        type: String,
+        enum: ['Point'],
+        default: 'Point',
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
       },
     },
   },
@@ -98,5 +104,20 @@ estateSchema.pre('save', async function (next) {
   }
   next();
 });
+estateSchema.index({ location: '2dsphere' });
+estateSchema.statics.findNearest = function (coordinates, maxDistance) {
+  return this.find({
+    location: {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates: coordinates,
+        },
+        $maxDistance: maxDistance,
+      },
+    },
+  });
+};
+
 const EstateModel = mongoose.model('Estates', estateSchema);
 export default EstateModel;
