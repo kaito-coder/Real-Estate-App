@@ -45,7 +45,18 @@ const APIFeatures = class {
   }
   sort() {
     if (this.queryString.sort) {
-      const sortBy = this.queryString.sort.split(',').join(' ');
+      const sortFields = this.queryString.sort.split(',');
+      const sortBy = sortFields
+        .map((field) => {
+          // get order from query and change it to -1 or 1
+          const [fieldName, sortOrder = 'asc'] = field.split('-');
+          const order = sortOrder === 'desc' ? -1 : 1;
+          return { [fieldName]: order };
+        })
+        .reduce((acc, val) => {
+          // converting an array to an object to transform it to fit the syntax of mongoose
+          return Object.assign(acc, val);
+        }, {});
       this.query = this.query.sort(sortBy);
     } else {
       this.query = this.query.sort('-createdAt');
