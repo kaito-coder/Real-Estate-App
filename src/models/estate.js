@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { MapPointer } from '../utils/mappointer.js';
 
 const { Schema } = mongoose;
 
@@ -63,7 +62,19 @@ const estateSchema = new mongoose.Schema(
       },
       coordinates: {
         type: [Number],
-        required: true,
+        default: [107.9133182, 16.0720759],
+        validate: {
+          validator: function (coordinates) {
+            return (
+              coordinates.length === 2 &&
+              coordinates[0] >= -180 &&
+              coordinates[0] <= 180 &&
+              coordinates[1] >= -90 &&
+              coordinates[1] <= 90
+            );
+          },
+          message: 'Invalid coordinates',
+        },
       },
     },
   },
@@ -82,28 +93,6 @@ estateSchema.pre(/^find/, function (next) {
   next();
 });
 
-estateSchema.pre('save', async function (next) {
-  try {
-    if (!this.address) {
-      const defaultCoordinates = {
-        lat: 16.0720759,
-        lng: 107.9133182,
-      };
-      if (!this.coordinates.lat || !this.coordinates.lng) {
-        this.coordinates = defaultCoordinates;
-      }
-      const { street, district, city, county, countryName } =
-        await MapPointer.getLocationByCoordinates({
-          lat: this.coordinates.lat,
-          lng: this.coordinates.lng,
-        });
-      this.address = `${street}, ${district}, ${city}, ${county}, ${countryName}`;
-    }
-  } catch (error) {
-    throw new Error(error.message);
-  }
-  next();
-});
 estateSchema.index({ location: '2dsphere' });
 estateSchema.statics.findNearest = function (coordinates, maxDistance) {
   return this.find({

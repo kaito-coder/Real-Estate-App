@@ -29,9 +29,15 @@ const createEstate = async ({ salerId, body, files }) => {
     uploadCoverImageEstate(coverImage, folderName),
     uploadThumbnailEstate(thubnail, folderName),
   ]);
-  fields.coordinates = fields.coordinates
-    ? JSON.parse(fields.coordinates)
-    : undefined;
+  if (fields.location) {
+    //convert coordinates String value from FormData to Number
+    fields.location = {
+      coordinates: convertCoordinatesStringToNumber(
+        fields.location.coordinates
+      ),
+      type: 'Point',
+    };
+  }
   const estateAdded = await EstateModel.create({
     _id: estateId,
     ...fields,
@@ -47,19 +53,24 @@ const getInfoEstate = async (id) => {
   return estateFound;
 };
 
-const deleteEstate = async (estateId) => {
-  const deletedDocument = await EstateModel.findByIdAndDelete(estateId);
-  const coverImgPublicId = getPublicIdByUrl(deletedDocument?.coverImg);
-  const thumbnailPublicId = deletedDocument.thumbnail.map((url) => {
-    return getPublicIdByUrl(url);
-  });
-  await Promise.all([
-    cloudinary.uploader.destroy(coverImgPublicId),
-    Promise.all(
-      thumbnailPublicId.map((publicId) => cloudinary.uploader.destroy(publicId))
-    ),
-  ]);
-  return deletedDocument;
+const deleteEstate = async (estate) => {
+  const deletedDocument = await EstateModel.deleteOne({ _id: estate.id });
+  if (deletedDocument.deletedCount) {
+    const coverImgPublicId = getPublicIdByUrl(estate?.coverImg);
+    const thumbnailPublicId = estate.thumbnail.map((url) => {
+      return getPublicIdByUrl(url);
+    });
+    await Promise.all([
+      cloudinary.uploader.destroy(coverImgPublicId),
+      Promise.all(
+        thumbnailPublicId.map((publicId) =>
+          cloudinary.uploader.destroy(publicId)
+        )
+      ),
+    ]);
+    return true;
+  }
+  return false;
 };
 
 const findContactEstate = async (estateID) => {
@@ -70,16 +81,24 @@ const findContactEstate = async (estateID) => {
   return contactEstate;
 };
 
-const updateEstate = async ({ estateId, body, files }) => {
+const updateEstate = async ({ estate, body, files }) => {
   const fields = pick(body, DTO.dtoEstate);
-  const folderName = `Estates/${estateId}`;
-  const estateFound = await EstateModel.findById(estateId);
+  const folderName = `Estates/${estate.id}`;
 
   const [coverImage, thumbnail] = await Promise.all([
     getCoverImageResized(files),
     getThumbnailResize(files),
   ]);
-  let currentCoverImagePublicId = getPublicIdByUrl(estateFound.coverImg);
+  if (fields.location) {
+    //convert coordinates String value from FormData to Number
+    fields.location = {
+      coordinates: convertCoordinatesStringToNumber(
+        fields.location.coordinates
+      ),
+      type: 'Point',
+    };
+  }
+  let currentCoverImagePublicId = getPublicIdByUrl(estate.coverImg);
   if (coverImage) {
     currentCoverImagePublicId = await uploadCoverImageEstate(
       coverImage,
@@ -90,14 +109,14 @@ const updateEstate = async ({ estateId, body, files }) => {
     );
   }
 
-  let currentThumbnailPublicId = estateFound.thumbnail;
+  let currentThumbnailPublicId = estate.thumbnail;
   if (thumbnail) {
     currentThumbnailPublicId = await uploadThumbnailEstate(
       thumbnail,
       folderName,
       async () => {
         await Promise.all(
-          estateFound.thumbnail.map((url) => {
+          estate.thumbnail.map((url) => {
             const publicId = getPublicIdByUrl(url);
             return cloudinary.uploader.destroy(publicId);
           })
@@ -105,8 +124,8 @@ const updateEstate = async ({ estateId, body, files }) => {
       }
     );
   }
-  const estateUpdated = await EstateModel.findByIdAndUpdate(
-    estateId,
+  const resultUpdated = await EstateModel.findByIdAndUpdate(
+    estate.id,
     {
       ...fields,
       coverImg: currentCoverImagePublicId,
@@ -114,8 +133,12 @@ const updateEstate = async ({ estateId, body, files }) => {
     },
     { new: true }
   );
-  return estateUpdated;
+  return resultUpdated;
 };
+
+function convertCoordinatesStringToNumber(coordinates) {
+  return coordinates.split(',').map((value) => parseFloat(value));
+}
 
 export {
   createEstate,
