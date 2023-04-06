@@ -60,10 +60,9 @@ const getEstateByOwner = catchAsync(async (req, res, next) => {
   });
 });
 const updateEstate = async (req, res, next) => {
-  const estateId = req.params.id;
   try {
     const estateUpdated = await estateService.updateEstate({
-      estateId,
+      estate: req.estate,
       body: req.body,
       files: req.files,
     });
@@ -78,8 +77,7 @@ const updateEstate = async (req, res, next) => {
 
 const deleteEstate = async (req, res, next) => {
   try {
-    const estateId = req.params.id;
-    const estateDeleted = await estateService.deleteEstate(estateId);
+    const estateDeleted = await estateService.deleteEstate(req.estate);
     return res.status(status.OK).json({
       message: ESTATE_MESSAGES.DELETED,
       data: { records: estateDeleted },

@@ -17,6 +17,6 @@ export const dtoEstate = [
   'price',
   'bedRoom',
   'bathRoom',
-  'coordinates',
+  'location',
   'description',
 ];

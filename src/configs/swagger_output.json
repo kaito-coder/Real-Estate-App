@@ -362,16 +362,16 @@
                   "type": "Number",
                   "example": 4
                 },
-                "coordinates": {
+                "location": {
                   "type": "object",
                   "properties": {
-                    "lat": {
-                      "type": "Number",
-                      "example": 16
+                    "type": {
+                      "type": "String",
+                      "example": "Point"
                     },
-                    "lng": {
-                      "type": "Number",
-                      "example": 108
+                    "coordinates": {
+                      "type": "array",
+                      "items": { "type": "Number", "example": [108, 16] }
                     }
                   }
                 },
@@ -484,16 +484,16 @@
                   "type": "Number",
                   "example": 4
                 },
-                "coordinates": {
+                "location": {
                   "type": "object",
                   "properties": {
-                    "lat": {
-                      "type": "Number",
-                      "example": 16
+                    "type": {
+                      "type": "String",
+                      "example": "Point"
                     },
-                    "lng": {
-                      "type": "Number",
-                      "example": 108
+                    "coordinates": {
+                      "type": "array",
+                      "items": { "type": "Number", "example": [108, 16] }
                     }
                   }
                 },
