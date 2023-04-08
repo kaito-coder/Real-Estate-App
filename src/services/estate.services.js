@@ -45,7 +45,7 @@ const createEstate = async ({ salerId, body, files }) => {
     coverImg: coverImageUrl,
     thumbnail: thumbnailUrl || [],
   });
-  return estateAdded;
+  return await getInfoEstate(estateAdded.id);
 };
 
 const getInfoEstate = async (id) => {
