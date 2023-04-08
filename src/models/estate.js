@@ -86,10 +86,14 @@ estateSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'type',
     select: 'name _id',
-  }).populate({
-    path: 'currentStatus',
-    select: 'name _id',
-  });
+  })
+    .populate({
+      path: 'currentStatus',
+      select: 'name _id',
+    })
+    .populate({
+      path: 'owner',
+    });
   next();
 });
 

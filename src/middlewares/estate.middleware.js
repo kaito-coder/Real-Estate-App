@@ -22,7 +22,7 @@ export const checkIsOwner = async (req, res, next) => {
   try {
     const salerId = req.user.id;
     const estateFound = req.estate;
-    if (salerId !== estateFound.owner.toString()) {
+    if (salerId !== estateFound.owner?.id.toString()) {
       return next(new AppError(ESTATE_MESSAGES.IS_NOT_OWNER, status.FORBIDDEN));
     }
   } catch (error) {
