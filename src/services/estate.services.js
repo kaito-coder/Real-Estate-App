@@ -98,20 +98,20 @@ const updateEstate = async ({ estate, body, files }) => {
       type: 'Point',
     };
   }
-  let currentCoverImagePublicId = getPublicIdByUrl(estate.coverImg);
+  let currentCoverImage = estate.coverImg;
   if (coverImage) {
-    currentCoverImagePublicId = await uploadCoverImageEstate(
+    currentCoverImage = await uploadCoverImageEstate(
       coverImage,
       folderName,
       async () => {
-        await cloudinary.uploader.destroy(currentCoverImagePublicId);
+        const publicId = await getPublicIdByUrl(currentCoverImage);
+        await cloudinary.uploader.destroy(publicId);
       }
     );
   }
-
-  let currentThumbnailPublicId = estate.thumbnail;
+  let currentThumbnail = estate.thumbnail;
   if (thumbnail) {
-    currentThumbnailPublicId = await uploadThumbnailEstate(
+    currentThumbnail = await uploadThumbnailEstate(
       thumbnail,
       folderName,
       async () => {
@@ -128,8 +128,8 @@ const updateEstate = async ({ estate, body, files }) => {
     estate.id,
     {
       ...fields,
-      coverImg: currentCoverImagePublicId,
-      thumbnail: currentThumbnailPublicId,
+      coverImg: currentCoverImage,
+      thumbnail: currentThumbnail,
     },
     { new: true }
   );
