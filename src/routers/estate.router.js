@@ -10,7 +10,7 @@ import conversationController from '../controllers/conversationController.js';
 import { setEstateUserIds } from '../middlewares/userModelMiddlewares.js';
 
 const estateRouter = express.Router();
-estateRouter.get('/nearestEstate', estateController.findNearEstate);
+estateRouter.post('/nearestEstate', estateController.findNearEstate);
 estateRouter.get('/', estateController.getAllEstate);
 estateRouter.route('/:estateId/comments', commentController.getCommentByEstate);
 estateRouter.get(
