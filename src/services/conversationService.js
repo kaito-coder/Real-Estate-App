@@ -4,7 +4,7 @@ const findConversationsByUserId = async (userId) => {
   try {
     const conversations = await ConversationModel.find({
       $or: [{ buyer: userId }, { seller: userId }],
-    });
+    }).populate('estate');
     return conversations;
   } catch (error) {
     throw new Error(error.message);
