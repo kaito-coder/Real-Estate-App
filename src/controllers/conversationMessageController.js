@@ -23,7 +23,7 @@ const getAllMessagesByConversation = catchAsync(async (req, res, next) => {
   const { conversationId } = req.params;
   const messages = ConversationMessageModel.find({
     conversation: conversationId,
-  });
+  }).populate('postedByUser');
   const features = new APIFeatures(messages, req.query)
     .filter()
     .sort()
