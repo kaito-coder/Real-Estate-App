@@ -1,8 +1,5 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
-dotenv.config();
-const apiKey = process.env.HERE_GEOCODING_API_KEY;
-const appId = process.env.HERE_GEOCODING_APP_ID;
+import { mapConfig } from '../configs/constants.js';
 
 export const MapPointer = {
   getAllProvinces: async () => {
@@ -48,13 +45,13 @@ export const MapPointer = {
       });
   },
   getRelativeCoordinatesByAdress: async (address) => {
-    const url = `https://geocode.search.hereapi.com/v1/geocode?q=${address}&apiKey=${apiKey}`;
+    const url = `https://geocode.search.hereapi.com/v1/geocode?q=${address}&apiKey=${mapConfig.apiKey}`;
     return (await axios.get(url))?.data?.items[0].position;
   },
   getLocationByCoordinates: async ({ lat, lng }) => {
     lat = parseFloat(lat).toFixed(4);
     lng = parseFloat(lng).toFixed(4);
-    const url = `https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=${apiKey}&app_id=${appId}&at=${lat},${lng}`;
+    const url = `https://revgeocode.search.hereapi.com/v1/revgeocode?apiKey=${mapConfig.apiKey}&app_id=${mapConfig.appId}&at=${lat},${lng}`;
     const { street, district, city, county, countryName } = (
       await axios.get(url)
     ).data.items[0].address;
