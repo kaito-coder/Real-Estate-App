@@ -12,7 +12,7 @@ global.io = new socketio.Server(server);
 global.io.on('connection', WebSockets.connection);
 async function run() {
   await connectDataBase();
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 }

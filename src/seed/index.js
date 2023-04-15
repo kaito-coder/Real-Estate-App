@@ -6,8 +6,6 @@ import seedRole from './role.seed.js';
 import { estateStatus, estateTypes, orderStatus, roles } from './data.js';
 import { connectDataBase, disConnectDataBase } from '../database/connectDB.js';
 
-import * as dotenv from 'dotenv';
-dotenv.config();
 await connectDataBase();
 await seedEstateStatus(estateStatus);
 await seedEstateType(estateTypes);

@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
+import { databaseConfig } from '../configs/constants.js';
 
 const connectDataBase = async () => {
   mongoose.set('strictQuery', true);
   try {
-    await mongoose.connect(process.env.MONGODB_CONNECTION_LOCALHOST_URL, {
-      dbName: `${process.env.DB_NAME}`,
+    await mongoose.connect(databaseConfig.DATABASE_URL, {
+      dbName: `${databaseConfig.DATABASE_NAME}`,
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

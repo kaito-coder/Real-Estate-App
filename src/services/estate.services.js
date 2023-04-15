@@ -1,5 +1,4 @@
 import { EstateModel } from '../models/index.js';
-import pick from 'lodash/pick.js';
 import {
   getCoverImageResized,
   getThumbnailResize,
@@ -15,9 +14,10 @@ import {
 } from '../utils/uploadCloud.js';
 import mongoose from 'mongoose';
 import { DTO, UPLOAD_MESSAGE } from '../configs/index.js';
+import lodash from 'lodash';
 
 const createEstate = async ({ salerId, body, files }) => {
-  const fields = pick(body, DTO.dtoEstate);
+  const fields = lodash.pick(body, DTO.dtoEstate);
   const estateId = mongoose.Types.ObjectId();
   const folderName = `Estates/${estateId}`;
   const [coverImage, thubnail] = await Promise.all([
@@ -82,7 +82,7 @@ const findContactEstate = async (estateID) => {
 };
 
 const updateEstate = async ({ estate, body, files }) => {
-  const fields = pick(body, DTO.dtoEstate);
+  const fields = lodash.pick(body, DTO.dtoEstate);
   const folderName = `Estates/${estate.id}`;
 
   const [coverImage, thumbnail] = await Promise.all([
@@ -104,32 +104,40 @@ const updateEstate = async ({ estate, body, files }) => {
       coverImage,
       folderName,
       async () => {
-        const publicId = await getPublicIdByUrl(currentCoverImage);
-        await cloudinary.uploader.destroy(publicId);
+        await cloudinary.uploader.destroy(getPublicIdByUrl(currentCoverImage));
       }
     );
   }
-  let currentThumbnail = estate.thumbnail;
+
+  // delete all images use want to remove in cloudinary
+  let arrayImagesRemoved = [];
+  if (body.imagesRemoved) {
+    arrayImagesRemoved = body.imagesRemoved.split(',');
+    await Promise.all(
+      arrayImagesRemoved.map((url) =>
+        cloudinary.uploader.destroy(getPublicIdByUrl(url))
+      )
+    );
+  }
+
+  const currentThumbnail = estate.thumbnail;
+
+  // get images user want to keep
+  let imagesKept = lodash.difference(currentThumbnail, arrayImagesRemoved);
+
+  // if the user has sent a thumbnail, add it to the images we have already kept
   if (thumbnail) {
-    currentThumbnail = await uploadThumbnailEstate(
-      thumbnail,
-      folderName,
-      async () => {
-        await Promise.all(
-          estate.thumbnail.map((url) => {
-            const publicId = getPublicIdByUrl(url);
-            return cloudinary.uploader.destroy(publicId);
-          })
-        );
-      }
-    );
+    const thumbnailAdded = await uploadThumbnailEstate(thumbnail, folderName);
+    imagesKept.push(thumbnailAdded);
+    imagesKept = lodash.flatten(imagesKept);
   }
+
   const resultUpdated = await EstateModel.findByIdAndUpdate(
     estate.id,
     {
       ...fields,
       coverImg: currentCoverImage,
-      thumbnail: currentThumbnail,
+      thumbnail: imagesKept,
     },
     { new: true }
   );
