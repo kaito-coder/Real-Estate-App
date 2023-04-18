@@ -11,13 +11,15 @@ const createConversationMessage = catchAsync(async (req, res, next) => {
     postedByUser: req.user.id,
     ...req.body,
   };
-  const newMessage = (await ConversationMessageModel.create(data)).populate(
-    'postedByUser'
-  );
+  const newMessage = await ConversationMessageModel.create(data);
   global.io.to(data.conversation).emit('newMessage', { message: newMessage });
+  const resMessage = await ConversationMessageModel.findOne({
+    _id: newMessage.id,
+  }).populate('postedByUser');
+
   return res.status(status.CREATED).json({
     message: conversationError.success,
-    data: newMessage,
+    data: resMessage,
   });
 });
 // get all message by ConversationId for user
