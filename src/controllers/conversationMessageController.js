@@ -11,7 +11,9 @@ const createConversationMessage = catchAsync(async (req, res, next) => {
     postedByUser: req.user.id,
     ...req.body,
   };
-  const newMessage = await ConversationMessageModel.create(data);
+  const newMessage = (await ConversationMessageModel.create(data)).populate(
+    'postedByUser'
+  );
   global.io.to(data.conversation).emit('newMessage', { message: newMessage });
   return res.status(status.CREATED).json({
     message: conversationError.success,
