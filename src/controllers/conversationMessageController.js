@@ -12,10 +12,11 @@ const createConversationMessage = catchAsync(async (req, res, next) => {
     ...req.body,
   };
   const newMessage = await ConversationMessageModel.create(data);
-  global.io.to(data.conversation).emit('newMessage', { message: newMessage });
   const resMessage = await ConversationMessageModel.findOne({
     _id: newMessage.id,
   }).populate('postedByUser');
+
+  global.io.to(data.conversation).emit('newMessage', { message: resMessage });
 
   return res.status(status.CREATED).json({
     message: conversationError.success,
