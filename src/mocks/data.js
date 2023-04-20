@@ -8,11 +8,11 @@ export const users = [
     id: mongoose.Types.ObjectId(),
     firstName: 'tran',
     lastName: 'duy',
-    email: 'duytran@gmail.com',
+    email: 'duy2@gmail.com',
     gender: 'male',
-    nationalId: '123123',
-    password: 'duyduyduy',
-    passwordConfirm: 'duyduyduy',
+    nationalId: 'A1duyduyduy',
+    password: 'A1duyduyduy',
+    passwordConfirm: 'A1duyduyduy',
   },
 ];
 const __filename = fileURLToPath(import.meta.url);

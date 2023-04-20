@@ -28,7 +28,7 @@ if (NODE_ENV === 'development') {
 }
 //Limit request from the same API
 const limiter = rateLimit({
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 1000, // limit each IP to 100 requests per windowMs
   windowMs: 60 * 60 * 1000, // 1 hour
   message: 'Too many request from this IP , please try again in an hour',
 });
