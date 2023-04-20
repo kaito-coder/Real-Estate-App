@@ -12,7 +12,7 @@ const availableStatusEstate = await EstateStatusModel.findOne({
   name: 'Available',
 });
 const houseTypeEstate = await EstateTypeModel.findOne({ name: 'House' });
-const owner = await UserModel.findOne({ name: 'duy' });
+const owner = await UserModel.findOne({ lastName: 'duy' }).exec();
 await createSampleEstates(
   estates_v2(availableStatusEstate.id, houseTypeEstate.id, owner.id)
 );

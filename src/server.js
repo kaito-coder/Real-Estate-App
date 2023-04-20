@@ -9,7 +9,8 @@ const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
 /** Create socket connection */
 global.io = new socketio.Server(server);
-global.io.on('connection', WebSockets.connection);
+const _instanceWebSocket = new WebSockets();
+global.io.on('connection', _instanceWebSocket.connection);
 async function run() {
   await connectDataBase();
   server.listen(PORT, () => {
