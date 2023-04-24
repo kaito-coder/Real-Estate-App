@@ -253,5 +253,307 @@ export const swagger = {
         responses: {},
       },
     },
+    '/estate-types/': {
+      get: {
+        description: '',
+        parameters: [],
+        responses: {},
+      },
+    },
+    '/estates/': {
+      get: {
+        description: 'This route allow you to get all Estate',
+        parameters: [],
+        responses: {},
+      },
+      post: {
+        tags: [],
+        description: 'This route help you create new Estate',
+        consumes: ['application/json'],
+        parameters: [
+          {
+            name: 'files',
+            in: 'body',
+            schema: {
+              type: 'object',
+              properties: {
+                coverImg: {
+                  type: 'string',
+                },
+                thumbnail: {
+                  type: '[string]',
+                },
+              },
+            },
+          },
+          {
+            name: 'body',
+            in: 'body',
+            schema: {
+              type: 'object',
+              properties: {
+                name: {
+                  example: 'Da Nang House',
+                  type: 'string',
+                },
+                address: {
+                  example: '32 Nguyen Ba Hoc, Binh Thuan, Hai Chau, Da Nang',
+                  type: 'string',
+                },
+                area: {
+                  example: '300',
+                  type: 'integer',
+                },
+                neiborHood: {
+                  example: 'Dragon bridge',
+                  type: 'string',
+                },
+                type: {
+                  example: 'ObjectId',
+                  type: 'ObjectId',
+                },
+                currentStatus: {
+                  example: 'ObjectId',
+                  type: 'ObjectId',
+                },
+                price: {
+                  example: '100000',
+                  type: 'integer',
+                },
+                bedRoom: {
+                  type: 'integer',
+                  example: '3',
+                },
+                bathRoom: {
+                  type: 'integer',
+                  example: '4',
+                },
+                description: {
+                  type: 'string',
+                  example: 'Can von xa lo',
+                },
+              },
+            },
+          },
+        ],
+        responses: {},
+        security: [
+          {
+            jwt: [],
+          },
+        ],
+      },
+    },
+    '/estates/{id}': {
+      get: {
+        description: '',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            type: 'string',
+          },
+        ],
+        responses: {},
+      },
+      delete: {
+        tags: [],
+        description: '',
+        consumes: ['application/json'],
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            type: 'string',
+          },
+        ],
+        responses: {},
+        security: [
+          {
+            jwt: [],
+          },
+        ],
+      },
+      patch: {
+        tags: [],
+        description: '',
+        consumes: ['application/json'],
+        parameters: [
+          {
+            name: 'files',
+            in: 'body',
+            schema: {
+              type: 'object',
+              properties: {
+                coverImg: {
+                  type: 'string',
+                },
+                thumbnail: {
+                  type: '[string]',
+                },
+              },
+            },
+          },
+          {
+            name: 'body',
+            in: 'body',
+            schema: {
+              type: 'object',
+              properties: {
+                name: {
+                  example: 'Da Nang House',
+                  type: 'string',
+                },
+                address: {
+                  example: '32 Nguyen Ba Hoc, Binh Thuan, Hai Chau, Da Nang',
+                  type: 'string',
+                },
+                area: {
+                  example: '300',
+                  type: 'integer',
+                },
+                neiborHood: {
+                  example: 'Dragon bridge',
+                  type: 'string',
+                },
+                type: {
+                  example: 'ObjectId',
+                  type: 'ObjectId',
+                },
+                currentStatus: {
+                  example: 'ObjectId',
+                  type: 'ObjectId',
+                },
+                price: {
+                  example: '100000',
+                  type: 'integer',
+                },
+                bedRoom: {
+                  type: 'integer',
+                  example: '3',
+                },
+                bathRoom: {
+                  type: 'integer',
+                  example: '4',
+                },
+                description: {
+                  type: 'string',
+                  example: 'Can von xa lo',
+                },
+              },
+            },
+          },
+        ],
+        responses: {},
+        security: [
+          {
+            jwt: [],
+          },
+        ],
+      },
+    },
+    '/comments/': {
+      get: {
+        tags: [],
+        description: '',
+        consumes: ['application/json'],
+        parameters: [],
+        responses: {},
+        security: [
+          {
+            jwt: [],
+          },
+        ],
+      },
+      post: {
+        tags: [],
+        description: '',
+        consumes: ['application/json'],
+        parameters: [
+          {
+            name: 'body',
+            in: 'body',
+            schema: {
+              type: 'object',
+              properties: {
+                estate: {
+                  example: 'any',
+                },
+                user: {
+                  example: 'any',
+                },
+              },
+            },
+          },
+        ],
+        responses: {},
+        security: [
+          {
+            jwt: [],
+          },
+        ],
+      },
+    },
+    '/comments/{id}': {
+      get: {
+        tags: [],
+        description: '',
+        consumes: ['application/json'],
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            type: 'string',
+          },
+        ],
+        responses: {},
+        security: [
+          {
+            jwt: [],
+          },
+        ],
+      },
+      delete: {
+        tags: [],
+        description: '',
+        consumes: ['application/json'],
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            type: 'string',
+          },
+        ],
+        responses: {},
+        security: [
+          {
+            jwt: [],
+          },
+        ],
+      },
+      patch: {
+        tags: [],
+        description: '',
+        consumes: ['application/json'],
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            type: 'string',
+          },
+        ],
+        responses: {},
+        security: [
+          {
+            jwt: [],
+          },
+        ],
+      },
+    },
   },
 };

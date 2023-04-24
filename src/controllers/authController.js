@@ -6,22 +6,7 @@ import AppError from '../utils/AppError.js';
 import { promisify } from 'util';
 import sendEmail from '../utils/sendEmail.js';
 import status from 'http-status';
-
-const message = {
-  statusSuccess: 'success',
-  provideLogin: 'Please provide an email and password',
-  incorrectLogin: 'Incorrect email or password',
-  isLogin: ' You are not logged in ',
-  userStillExists: 'The user belonging to this token does  no longer exist',
-  userChangedPassword: 'Your password has been changed successfully',
-  permisson: 'You do not have permission to perform this action',
-  sendResetToken: 'Your password reset token(valid for 10 min)',
-  tokenExpired: 'Your password reset token has expired',
-  sendEmailSuccess: 'Email sent successfully',
-  userWithEmail: 'There is no user with that email',
-  passwordCurrentWrong: 'Your current password is wrong.',
-  sendEmailError: 'there was an error sending the email.Try again later !',
-};
+import message from '../configs/authMessageRes.js';
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -48,7 +33,12 @@ const createSendToken = (user, statusCode, res) => {
     },
   });
 };
+
 const signup = catchAsync(async (req, res, next) => {
+  const checkEmail = await UserModel.findOne({ email: req.body.email });
+  if (checkEmail) {
+    return next(new AppError(message.emailAlreadyExists, status.BAD_REQUEST));
+  }
   const newUser = await UserModel.create(req.body);
   createSendToken(newUser, status.CREATED, res);
 });

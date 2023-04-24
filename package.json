@@ -6,19 +6,24 @@
   "author": "Team intern Node JS",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint '**/*.js' --fix",
+    "lint": "eslint \"**/*.js\" --fix",
     "start:dev": " NODE_ENV=development nodemon src/server.js",
     "start:prod": "NODE_ENV=production nodemon src/server.js",
     "swagger-autogen": " node src/configs/swagger.js",
     "start": "node src/server.js",
     "prepare": "husky install",
     "dev": "nodemon src/server.js",
-    "seeder": "nodemon src/seed/index.js",
-    "start": "nodemon src/server.js"
+    "seed": "node src/seed/index.js",
+    "mock": "node src/mocks/index.js",
+    "dev:test": "yarn seed && yarn mock && yarn dev"
+
   },
   "dependencies": {
+    "axios": "^1.3.4",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "cloudinary": "^1.34.0",
     "cors": "^2.8.5",
     "datauri": "^4.1.0",
@@ -39,12 +44,16 @@
     "nodemon": "^2.0.20",
     "sharp": "^0.31.3",
     "slugify": "^1.6.5",
+    "socket.io": "^4.6.1",
+    "uuid": "^9.0.0",
     "validator": "^13.9.0",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/eslint-parser": "^7.19.1",
+    "@babel/plugin-proposal-json-strings": "^7.18.6",
+    "@babel/plugin-syntax-import-assertions": "^7.20.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.34.0",
     "eslint-config-airbnb": "^19.0.4",

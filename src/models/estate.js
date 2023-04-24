@@ -6,7 +6,7 @@ const estateSchema = new mongoose.Schema(
   {
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'UserModel',
+      ref: 'Users',
       required: [true, 'Owner is required'],
     },
     name: {
@@ -15,7 +15,6 @@ const estateSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      required: [true, 'Address is required'],
     },
     area: {
       type: Number,
@@ -31,12 +30,12 @@ const estateSchema = new mongoose.Schema(
     type: {
       type: Schema.Types.ObjectId,
       required: [true, 'This estate must have type of it'],
-      ref: 'EstateTypeModel',
+      ref: 'EstateTypes',
     },
     currentStatus: {
       type: Schema.Types.ObjectId,
       required: [true, 'This esate must have status of it'],
-      ref: 'EstateStatusModel',
+      ref: 'EstateStatuses',
     },
     coverImg: {
       type: String,
@@ -54,17 +53,64 @@ const estateSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    comments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Comments',
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point',
+        required: true,
       },
-    ],
+      coordinates: {
+        type: [Number],
+        default: [107.9133182, 16.0720759],
+        validate: {
+          validator: function (coordinates) {
+            return (
+              coordinates.length === 2 &&
+              coordinates[0] >= -180 &&
+              coordinates[0] <= 180 &&
+              coordinates[1] >= -90 &&
+              coordinates[1] <= 90
+            );
+          },
+          message: 'Invalid coordinates',
+        },
+      },
+    },
   },
   {
     timestamps: true,
   }
 );
+estateSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'type',
+    select: 'name _id',
+  })
+    .populate({
+      path: 'currentStatus',
+      select: 'name _id',
+    })
+    .populate({
+      path: 'owner',
+    });
+  next();
+});
+
+estateSchema.index({ location: '2dsphere' });
+estateSchema.statics.findNearest = function (coordinates, maxDistance) {
+  return this.find({
+    location: {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates: coordinates,
+        },
+        $maxDistance: maxDistance,
+      },
+    },
+  });
+};
 
 const EstateModel = mongoose.model('Estates', estateSchema);
 export default EstateModel;

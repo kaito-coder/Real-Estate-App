@@ -1,47 +1,60 @@
+import mongoose from 'mongoose';
+
 export const estateStatus = [
   {
-    name: 'available',
+    id: mongoose.Types.ObjectId(),
+    name: 'Available',
   },
   {
-    name: 'sold',
+    id: mongoose.Types.ObjectId(),
+    name: 'Sold',
   },
   {
-    name: 'dealing',
+    id: mongoose.Types.ObjectId(),
+    name: 'Dealing',
   },
 ];
 
 export const estateTypes = [
   {
-    name: 'house',
+    id: mongoose.Types.ObjectId(),
+    name: 'House',
   },
   {
-    name: 'apartment',
+    id: mongoose.Types.ObjectId(),
+    name: 'Apartment',
   },
   {
-    name: 'building',
+    id: mongoose.Types.ObjectId(),
+    name: 'Building',
   },
 ];
 
 export const orderStatus = [
   {
-    name: 'pending',
+    id: mongoose.Types.ObjectId(),
+    name: 'Pending',
     estates: [],
   },
   {
-    name: 'confirmed',
+    id: mongoose.Types.ObjectId(),
+    name: 'Confirmed',
     estates: [],
   },
   {
-    name: 'done',
+    id: mongoose.Types.ObjectId(),
+    name: 'Done',
     estates: [],
   },
 ];
 
 export const roles = [
   {
+    id: mongoose.Types.ObjectId(),
     name: 'ADMIN',
   },
   {
+    id: mongoose.Types.ObjectId(),
     name: 'SALER & BUYER',
   },
 ];

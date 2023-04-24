@@ -30,6 +30,7 @@ const updateMe = catchAsync(async (req, res, next) => {
     'email',
     'address',
     'phoneNumber',
+    'gender',
   ];
   const filteredBody = lodash.pick(req.body, fieldsToUpdate);
   if (req.file) {

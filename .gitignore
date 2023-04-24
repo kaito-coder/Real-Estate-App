@@ -4,4 +4,5 @@ test.js
 .husky
 .pnp.cjs
 .pnp.loader.mjs
-.src.database.connectDB.js
+src/.DS_Store
+

@@ -10,9 +10,10 @@ import hpp from 'hpp';
 import { NODE_ENV } from './configs/constants.js';
 import router from './routers/index.js';
 import swaggerUi from 'swagger-ui-express';
-import { swagger as swaggerFile } from './configs/swagger_output.js';
+import { createRequire } from 'node:module';
 import cors from 'cors';
-
+const require = createRequire(import.meta.url);
+const swaggerFile = require('./configs/swagger_output.json');
 const app = express();
 app.use(cors());
 console.log(NODE_ENV);
@@ -25,7 +26,7 @@ if (NODE_ENV === 'development') {
 }
 //Limit request from the same API
 const limiter = rateLimit({
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 1000, // limit each IP to 100 requests per windowMs
   windowMs: 60 * 60 * 1000, // 1 hour
   message: 'Too many request from this IP , please try again in an hour',
 });
@@ -34,6 +35,7 @@ app.use('/api', limiter);
 // Body parser,reading data from into req.body
 app.use(express.json({ limit: '10kb' }));
 
+app.use(express.urlencoded({ extended: true }));
 //Data sanitiation against NoSQL query injection
 app.use(mongoSanitize());
 

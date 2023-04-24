@@ -5,47 +5,60 @@ import crypto from 'crypto';
 
 const { Schema } = mongoose;
 
-const userSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    required: [true, 'please tell us your first name'],
-  },
-  lastName: {
-    type: String,
-    required: [true, 'please tell us your last name'],
-  },
-  email: {
-    type: String,
-    required: [true, 'please provide a valid email'],
-    unique: true,
-    trim: true,
-    lowercase: true,
-    validate: [validator.isEmail, 'please provide a valid email'],
-  },
-  password: {
-    type: String,
-    minlength: [8, 'password must be at least 8 characters long'],
-    required: [true, 'Password is required'],
-    select: false,
-  },
-  passwordConfirm: {
-    type: String,
-    required: true,
-    validate: {
-      // This only works with CREATE & SAVE!!!!!
-      validator: function (el) {
-        return el === this.password;
-      },
+const userSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: [true, 'please tell us your first name'],
     },
-    estates: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'EstateModel',
+    lastName: {
+      type: String,
+      required: [true, 'please tell us your last name'],
+    },
+    email: {
+      type: String,
+      required: [true, 'please provide a valid email'],
+      unique: true,
+      trim: true,
+      lowercase: true,
+      validate: [validator.isEmail, 'please provide a valid email'],
+    },
+    gender: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      enum: ['male', 'female', 'others'],
+    },
+    nationalId: {
+      type: String,
+      required: [true, 'please provide your national id'],
+      trim: true,
+    },
+    password: {
+      type: String,
+      minlength: [8, 'password must be at least 8 characters long'],
+      required: [true, 'Password is required'],
+      select: false,
+    },
+    passwordConfirm: {
+      type: String,
+      required: true,
+      validate: {
+        // This only works with CREATE & SAVE!!!!!
+        validator: function (el) {
+          return el === this.password;
+        },
       },
-    ],
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
+      estates: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'EstateModel',
+        },
+      ],
+      isEmailVerified: {
+        type: Boolean,
+        default: false,
+      },
     },
     passwordChangedAt: {
       type: Date,
@@ -57,27 +70,16 @@ const userSchema = new mongoose.Schema({
       type: String,
       maxLength: 10,
     },
+    profileImage: {
+      type: String,
+    },
+    passwordResetToken: String,
+    passwordResetExpires: Date,
   },
-  createAt: {
-    type: Date,
-    default: Date.now,
-  },
-  passwordChangedAt: {
-    type: Date,
-  },
-  address: {
-    type: String,
-  },
-  phoneNumber: {
-    type: String,
-    maxLength: 10,
-  },
-  profileImage: {
-    type: String,
-  },
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-});
+  {
+    timestamps: true,
+  }
+);
 userSchema.pre('save', async function (next) {
   // only run this function if password was actually modified
   if (!this.isModified('password')) return next();

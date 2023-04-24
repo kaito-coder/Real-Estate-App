@@ -44,11 +44,11 @@ const updateOne = (Model) =>
 const createOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.create(req.body);
-
+    const docRes = await Model.findById(doc.id);
     res.status(status.CREATED).json({
       message: message[200],
       data: {
-        record: doc,
+        record: docRes,
       },
     });
   });
@@ -79,6 +79,8 @@ const getAll = (Model) =>
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
+      .searchAllEstatesInSection()
+      .searchInRangePriceAndAreaAndBathRoomAndBedRoom()
       .sort()
       .limitFields()
       .paginate();
@@ -90,7 +92,7 @@ const getAll = (Model) =>
       message: message[200],
       data: {
         records: doc,
-        results: doc.length,
+        total: doc.length,
       },
     });
   });

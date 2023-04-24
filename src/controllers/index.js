@@ -2,7 +2,15 @@ import { getAllRoles } from './role.controller.js';
 import { getAllOrderStatus } from './orderStatus.controller.js';
 import { getAllEstateStatus } from './estateStatus.controller.js';
 import { getAllEstateType } from './estateType.controller.js';
-import { createEstate } from './estate.controller.js';
+import {
+  createEstate,
+  getAllEstate,
+  getInfoEstate,
+  deleteEstate,
+  updateEstate,
+  getEstateByOwner,
+  findNearEstate,
+} from './estate.controller.js';
 
 const roleController = {
   getAllRoles,
@@ -21,6 +29,12 @@ const estateTypeController = {
 };
 const estateController = {
   createEstate,
+  getAllEstate,
+  getInfoEstate,
+  deleteEstate,
+  updateEstate,
+  getEstateByOwner,
+  findNearEstate,
 };
 
 export {

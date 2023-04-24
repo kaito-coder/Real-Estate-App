@@ -2,16 +2,16 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const favouriteSchema = new mongoose.Schema(
+const wishesListSchema = new mongoose.Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'UserModel',
+      ref: 'Users',
       required: [true, 'Whisher is required'],
     },
     estate: {
       type: Schema.Types.ObjectId,
-      ref: 'EstateModel',
+      ref: 'Estates',
       required: [true, 'Estate liked is required'],
     },
   },
@@ -19,10 +19,11 @@ const favouriteSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+wishesListSchema.pre(/^find/, function (next) {
+  this.populate('estate');
+  next();
+});
 
-const FavouriteEstateModel = mongoose.model(
-  'FavouriteEstates',
-  favouriteSchema
-);
+const wishesListModel = mongoose.model('wishesListEstates', wishesListSchema);
 
-export default FavouriteEstateModel;
+export default wishesListModel;
