@@ -12,10 +12,8 @@ import router from './routers/index.js';
 import swaggerUi from 'swagger-ui-express';
 import { createRequire } from 'node:module';
 import cors from 'cors';
-
 const require = createRequire(import.meta.url);
 const swaggerFile = require('./configs/swagger_output.json');
-
 const app = express();
 app.use(cors());
 console.log(NODE_ENV);
